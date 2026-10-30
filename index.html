@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#127032">
+  <title>Fresh Veggie & Grocery | Gossaigaon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #127032;
+      --primary-dark: #094a20;
+      --primary-light: #e8f5ed;
+      --accent: #ff8c00;
+      --bg: #f8faf8;
+      --surface: #ffffff;
+      --text: #17241c;
+      --muted: #627568;
+      --border: #e3ece6;
+      --radius: 14px;
+      --danger: #dc2626;
+      --shadow: 0 4px 20px -2px rgba(18, 112, 50, 0.08);
+      --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 110px;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      background: rgba(18, 112, 50, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+      padding: 14px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-text { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-header {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: white;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .btn-header:active { transform: scale(0.96); background: rgba(255,255,255,0.25); }
+
+    .main-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .wallet-card {
+      background: linear-gradient(135deg, #127032 0%, #08401b 100%);
+      color: white;
+      padding: 18px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(18, 112, 50, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .wallet-card::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .wallet-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.8; font-weight: 600; }
+    .wallet-val { font-size: 26px; font-weight: 800; margin-top: 2px; }
+    .btn-wallet-add {
+      background: #ffffff;
+      color: var(--primary-dark);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: inline-block;
+      transition: 0.2s;
+    }
+    .user-pill {
+      font-size: 11px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .delivery-notice {
+      background: #f0f8f3;
+      border: 1px solid #c9e4d3;
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--primary-dark);
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .search-box { display: flex; flex-direction: column; gap: 8px; }
+    .search-input-wrap { position: relative; }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 12px 14px 12px 38px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      background: var(--surface);
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .cat-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .cat-bar::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      white-space: nowrap;
+      padding: 7px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-pill.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(18, 112, 50, 0.25);
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .product-media-wrap {
+      width: 100%;
+      height: 125px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f2f5f3;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .product-media-wrap img, .product-media-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product-cat-tag {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-transform: uppercase;
+    }
+    .stock-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(18, 112, 50, 0.9);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+    .stock-badge.out { background: rgba(220, 38, 38, 0.9); }
+    .product-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+    .product-unit { font-size: 11px; color: var(--muted); }
+    .product-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 6px 0;
+    }
+    button.btn-add {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12px;
+      width: 100%;
+      transition: background 0.15s;
+    }
+    button.btn-add:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .panel h3 { font-size: 14px; margin-bottom: 4px; color: var(--primary-dark); }
+    .panel p { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+
+    input[type="text"], input[type="tel"], input[type="password"], input[type="number"], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 8px;
+      outline: none;
+      background: var(--surface);
+    }
+    input:focus, select:focus { border-color: var(--primary); }
+
+    .btn-block {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:active { background: var(--primary-dark); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-gmail { background: #ea4335; color: white; margin-top: 6px; }
+    .btn-guest { background: #4a5568; color: white; margin-top: 6px; }
+
+    .popup-box {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 24, 15, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .popup-inner {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .popup-close {
+      float: right;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      background: #f0f4f1;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+    .profile-nav, .admin-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      background: #eef4f0;
+      padding: 4px;
+      border-radius: 12px;
+    }
+    .profile-tab, .admin-tab {
+      flex: 1;
+      padding: 8px 6px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+    }
+    .profile-tab.active, .admin-tab.active {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .track-step-wrap {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 16px 0 10px 0;
+    }
+    .track-step-wrap::before {
+      content: '';
+      position: absolute;
+      top: 13px;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      background: #e2e8e4;
+      z-index: 1;
+    }
+    .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
+    .step-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #e2e8e4;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      margin: 0 auto 6px auto;
+    }
+    .step-item.active .step-dot {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 0 3px rgba(18, 112, 50, 0.2);
+    }
+    .step-title { font-size: 10px; font-weight: 600; color: var(--muted); }
+    .step-item.active .step-title { color: var(--primary-dark); font-weight: 700; }
+
+    .scratch-wrapper {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 12px auto;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      border: 3px solid #ffcc00;
+      user-select: none;
+    }
+    .scratch-reward {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 14px;
+    }
+    .scratch-canvas {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 2;
+      cursor: crosshair;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-wrap" onclick="secretAdminClick()" title="Secret Admin Mode">
+      <div class="brand-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      </div>
+      <div class="brand-text">Fresh Veggie</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-header" onclick="openUserProfile()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span id="headerUserName">Profile</span>
+      </button>
+      <button class="btn-header" onclick="showCartPopup()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <span id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="main-wrap">
+    <div class="wallet-card">
+      <div>
+        <div class="wallet-lbl">Wallet Balance</div>
+        <div class="wallet-val">₹<span id="walletBal">0.00</span></div>
+        <button class="btn-wallet-add" onclick="showPopup('walletPopup')">+ Add Cash</button>
+      </div>
+      <div style="text-align: right; z-index: 2;">
+        <span class="user-pill" onclick="openUserProfile()" id="userTag">Guest</span>
+      </div>
+    </div>
+
+    <div class="delivery-notice">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#127032" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <div><b>Gossaigaon Delivery:</b> Min order ₹100. Fee ₹21 under ₹300; <b>FREE</b> for ₹300+.</div>
+    </div>
+
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search fresh vegetables, oil, rice..." oninput="doSearch()">
+      </div>
+      <div class="cat-bar">
+        <div class="cat-pill active" onclick="setCategoryFilter('All', this)">All Items</div>
+        <div class="cat-pill" onclick="setCategoryFilter('Vegetables', this)">Fresh Vegetables</div>
+        <div class="cat-pill" onclick="setCategoryFilter('Groceries', this)">Daily Groceries</div>
+      </div>
+    </div>
+
+    <div class="grid" id="productsGrid"></div>
+
+    <div class="panel">
+      <h3>🎁 Refer & Earn Cash</h3>
+      <p id="refNotice">Invite friends: Get <b>₹5</b> on 1st order + <b>₹5 bonus</b> per ₹1,000 cart value!</p>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="myRefCode" readonly style="font-weight: 800; text-align: center; margin-bottom: 0;">
+        <button class="btn-block btn-primary" style="width: 110px;" onclick="copyCode()">Copy Code</button>
+      </div>
+     </div>
+    
+     <!-- POPUP 1: WELCOME BONUS -->
+  <div class="popup-box" id="welcomeBonusPopup">
+    <div class="popup-inner" style="max-width: 320px; text-align: center; border: 2px solid #ffcc00; background: linear-gradient(180deg, #ffffff 0%, #fef9e7 100%);">
+      <div style="font-size: 46px; margin-bottom: 4px;">🎉</div>
+      <h3 style="color: #b45309; font-size: 20px; margin-bottom: 4px;">Welcome Bonus!</h3>
+      <div style="background: #fde68a; color: #92400e; font-size: 28px; font-weight: 800; padding: 12px; border-radius: 14px; margin: 10px 0; border: 1px dashed #d97706;">
+        UP TO ₹100
+      </div>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Instant Welcome Cash of <b>₹20.00</b> has been activated in your wallet balance!</p>
+      <button class="btn-block btn-primary" onclick="hidePopup('welcomeBonusPopup')">Start Shopping 🥦</button>
+    </div>
+  </div>
+
+  <!-- POPUP 2: SCRATCH CARD -->
+  <div class="popup-box" id="scratchPopup">
+    <div class="popup-inner" style="max-width: 340px; text-align: center;">
+      <h3 style="color: var(--primary); font-size: 18px;">🎁 Order Reward Unlocked!</h3>
+      <p style="font-size: 12px; color: var(--muted);">Scratch below to reveal cashback up to ₹100</p>
+      
+      <div class="scratch-wrapper" id="scratchCardWrap">
+        <div class="scratch-reward">
+          <span style="font-size: 32px;">💰</span>
+          <h4 style="font-size: 14px; color: #92400e; margin-top: 4px;">Cashback Revealed!</h4>
+          <div style="font-size: 26px; font-weight: 800; color: #b45309; margin: 4px 0;">₹<span id="scratchAmountDisplay">0.50</span></div>
+          <small style="font-size: 10px; color: var(--muted);">Status: Will credit to wallet upon Order Acceptance</small>
+        </div>
+        <canvas id="scratchCanvas" class="scratch-canvas" width="240" height="240"></canvas>
+      </div>
+
+      <p id="scratchNotice" style="font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 10px;">Scratch with your finger/mouse to reveal!</p>
+      <button class="btn-block btn-primary" id="btnScratchCollect" style="display: none;" onclick="collectScratchCash()">Lock Reward</button>
+    </div>
+  </div>
+
+  <!-- POPUP: USER PROFILE -->
+  <div class="popup-box" id="profilePopup">
+    <div class="popup-inner">
+      <button class="popup-close" onclick="hidePopup('profilePopup')">✕</button>
+      <div style="text-align: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+        <div style="width: 50px; height: 50px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 20px; font-weight: 800;">👤</div>
+        <h3 id="profUserTitle" style="color: var(--primary-dark); font-size: 15px;">Account</h3>
+        <span id="profUserBadge" class="user-pill" style="color: var(--primary); border-color: var(--border);">Active</span>
+      </div>
+
+      <div class="profile-nav">
+        <button class="profile-tab active" id="tabProfOrders" onclick="switchProfileTab('orders')">📦 My Orders</button>
+        <button class="profile-tab" id="tabProfRef" onclick="switchProfileTab('referral')">🎁 Referral Earnings</button>
+      </div>
+
+      <div id="profSectionOrders">
+        <div id="profileOrdersList"></div>
+      </div>
+
+      <div id="profSectionReferral" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center;">
+            <div style="font-size: 11px; color: var(--muted);">Friends Referred</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--primary);" id="profTotalReferred">0</div>
+          </div>
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center;">
+            <div style="font-size: 11px; color: var(--muted);">Cash Earned</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--primary);" id="profTotalComm">0</div>
+          </div>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">Commission Credits:</div>
+        <div id="profCommHistoryWrap" style="font-size: 12px;"></div>
+      </div>
+
+      <button class="btn-block btn-guest" style="margin-top: 14px;" onclick="userLogout()">Logout / Switch Account</button>
+    </div>
+   </div>
+
+  <!-- POPUP: Add Cash to Wallet -->
+  <div class="popup-box" id="walletPopup">
+    <div class="popup-inner">
+      <button class="popup-close" onclick="hidePopup('walletPopup')">✕</button>
+      <h3 style="color: var(--primary); margin-bottom: 4px;">Top-up Wallet</h3>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Pay via GPay, PhonePe, Paytm QR.</p>
+      
+      <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+        <button type="button" class="cat-pill" style="flex:1;" onclick="setTopupAmount(100)">+₹100</button>
+        <button type="button" class="cat-pill" style="flex:1;" onclick="setTopupAmount(200)">+₹200</button>
+        <button type="button" class="cat-pill" style="flex:1;" onclick="setTopupAmount(500)">+₹500</button>
+      </div>
+      <input type="number" id="topupAmt" placeholder="Enter amount (min ₹10)" min="10" oninput="genTopupQr()">
+
+      <div id="topupQrArea" style="text-align: center; display: none; background: #fdfdfd; padding: 12px; border-radius: 14px; border: 1px dashed var(--primary); margin-bottom: 12px;">
+        <p style="font-size: 11px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px;">Scan QR with any UPI App</p>
+        <img id="topupQrImg" src="" alt="Topup QR" style="width: 140px; height: 140px; border-radius: 8px; margin: 0 auto; display: block;">
+        <p style="font-size: 11px; color: var(--muted); margin-top: 6px;">UPI: <b>8134834380@mbk</b></p>
+      </div>
+
+      <button class="btn-block btn-primary" onclick="confirmTopup()">Confirm Balance Added</button>
+    </div>
+  </div>
+
+  <!-- POPUP: Auth Dialog -->
+  <div class="popup-box" id="loginPopup">
+    <div class="popup-inner">
+      <button class="popup-close" onclick="hidePopup('loginPopup')">✕</button>
+      
+      <div id="registerBox">
+        <h3 style="margin-bottom: 4px; color: var(--primary);">Create Account</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Get Welcome Bonus up to ₹100 instantly!</p>
+        
+        <input type="tel" id="regPhone" placeholder="10-digit mobile number" maxlength="10">
+        <input type="password" id="regPass" placeholder="Create password (min 6 characters)">
+        <input type="text" id="refInput" placeholder="Referral code (Optional)">
+
+        <button class="btn-block btn-primary" onclick="handleRegister()">Register & Claim Bonus</button>
+        <button class="btn-block btn-gmail" onclick="continueWithGmail()">Login with Gmail</button>
+        <button class="btn-block btn-guest" onclick="continueAsGuest()">Instant Guest Access</button>
+
+        <p class="auth-toggle" onclick="toggleAuthView('login')">Already registered? Log in here</p>
+      </div>
+
+      <div id="loginFormBox" style="display: none;">
+        <h3 style="margin-bottom: 4px; color: var(--primary);">Welcome Back</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Login with your phone & password.</p>
+        
+        <input type="tel" id="logPhone" placeholder="10-digit mobile number" maxlength="10">
+        <input type="password" id="logPass" placeholder="Enter password">
+
+        <button class="btn-block btn-primary" onclick="handleLogin()">Login</button>
+        <button class="btn-block btn-gmail" onclick="continueWithGmail()">Login with Gmail</button>
+        <button class="btn-block btn-guest" onclick="continueAsGuest()">Instant Guest Access</button>
+
+        <p class="auth-toggle" onclick="toggleAuthView('register')">New customer? Create account</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: Checkout -->
+  <div class="popup-box" id="cartPopup">
+    <div class="popup-inner">
+      <button class="popup-close" onclick="hidePopup('cartPopup')">✕</button>
+      
+      <div id="checkoutFormWrapper">
+        <h3 style="margin-bottom: 8px; color: var(--primary);">Checkout & Delivery</h3>
+        <div id="cartItemList" style="font-size: 13px; margin-bottom: 10px;"></div>
+        
+        <div style="background: var(--bg); padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px; font-size: 13px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>Subtotal:</span><span>₹<span id="subTotalVal">0</span></span></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>Delivery Fee:</span><span id="feeVal">₹0</span></div>
+          <div style="display:flex; justify-content:space-between; font-weight: 800; font-size: 15px; color: var(--primary); border-top: 1px dashed var(--border); padding-top: 6px; margin-top: 4px;">
+            <span>Final Total:</span><span>₹<span id="finalTotalVal">0</span></span>
+          </div>
+        </div>
+
+        <input type="text" id="cName" placeholder="Full name">
+        <input type="tel" id="cPhone" placeholder="10-digit mobile number" maxlength="10">
+
+        <select id="cVillage">
+          <option value="">-- Choose Gossaigaon Area --</option>
+          <option value="Gossaigaon Town">Gossaigaon Town / Ward</option>
+          <option value="Habrubil">Habrubil</option>
+          <option value="Padmabil">Padmabil</option>
+          <option value="Oxiguri">Oxiguri (অক্সিগুড়ি)</option>
+          <option value="Sapkata">Sapkata</option>
+          <option value="Kachugaon">Kachugaon</option>
+          <option value="Telipara">Telipara</option>
+          <option value="Bhowraguri">Bhowraguri</option>
+          <option value="Srirampur">Srirampur</option>
+          <option value="Shimultapu">Shimultapu</option>
+          <option value="Other Area">Other Nearby Village</option>
+        </select>
+
+        <input type="text" id="cAddress" placeholder="Exact house, road, or landmark">
+
+        <div style="margin: 8px 0 10px 0;">
+          <label style="font-size: 12px; font-weight: 700;">Payment Mode</label>
+          <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <label style="flex:1; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
+              <input type="radio" name="payType" value="COD" checked onchange="updatePayView()"> COD
+            </label>
+            <label style="flex:1; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
+              <input type="radio" name="payType" value="WALLET" onchange="updatePayView()"> Wallet
+            </label>
+            <label style="flex:1; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
+              <input type="radio" name="payType" value="UPI" onchange="updatePayView()"> UPI QR
+            </label>
+          </div>
+        </div>
+
+        <div id="qrBox" style="display: none; text-align: center; background: #fff; padding: 12px; border-radius: 12px; border: 1px dashed var(--primary); margin-bottom: 12px;">
+          <img id="qrImg" src="" alt="UPI QR" style="width: 140px; height: 140px; border-radius: 8px; margin: 0 auto; display: block;">
+          <p style="font-size: 11px; color: var(--muted); margin-top: 4px;">Scan & Pay: ₹<span id="qrTotal">0</span></p>
+        </div>
+
+        <button class="btn-block btn-primary" onclick="placeOnlineOrder()">Place Order</button>
+      </div>
+
+      <!-- Success Screen -->
+      <div id="orderSuccessSection" style="display: none; text-align: center; padding: 12px 0;">
+        <div style="width: 50px; height: 50px; background: #e8f5ed; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; color: var(--primary); font-size: 24px;">✓</div>
+        <h3 style="color: var(--primary); font-size: 18px;">Order Confirmed!</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Your order has been received by store manager.</p>
+        
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 14px; text-align: left; font-size: 12px; line-height: 1.6;">
+          <p><b>Order ID:</b> <span id="displayOrderId" style="color: var(--primary);"></span></p>
+          <p><b>Receiver:</b> <span id="displayOrderCustomer"></span></p>
+          <p><b>Area:</b> <span id="displayOrderArea"></span></p>
+          <p><b>Total Amount:</b> ₹<span id="displayOrderAmount" style="font-weight: 800;"></span> (<span id="displayOrderPay"></span>)</p>
+        </div>
+
+        <button type="button" class="btn-block btn-primary" style="background:#d97706;" onclick="openScratchCardFromOrder()">🎁 Scratch & Win Cash (Upto ₹100)</button>
+        <button type="button" class="btn-block btn-guest" style="margin-top: 8px;" onclick="resetAndCloseOrder()">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECRET PIN AUTH (PIN: 8822) -->
+  <div class="popup-box" id="adminSecretPopup">
+    <div class="popup-inner" style="max-width: 320px; text-align: center;">
+      <button class="popup-close" onclick="hidePopup('adminSecretPopup')">✕</button>
+      <div style="font-size: 28px; margin-bottom: 6px;">🔐</div>
+      <h3 style="color: var(--primary-dark); font-size: 16px;">Store Manager</h3>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Authorized administrator PIN</p>
+      
+      <input type="password" id="secretAdminPin" placeholder="••••" maxlength="4" style="text-align: center; letter-spacing: 8px; font-size: 20px;">
+      <button class="btn-block btn-primary" onclick="verifySecretAdmin()">Unlock Dashboard</button>
+    </div>
+  </div>
+
+  <!-- STORE MANAGER DASHBOARD: QUANTITY + ACCEPT/CANCEL ORDERS -->
+  <div class="popup-box" id="adminDashboardPopup">
+    <div class="popup-inner" style="max-width: 480px; max-height: 90vh;">
+      <button class="popup-close" onclick="hidePopup('adminDashboardPopup')">✕</button>
+      
+      <div class="admin-nav">
+        <button class="admin-tab active" id="tabAdmDashboard" onclick="switchAdminTab('dashboard')">📊 Dashboard</button>
+        <button class="admin-tab" id="tabAdmOrders" onclick="switchAdminTab('orders')">📦 Orders</button>
+        <button class="admin-tab" id="tabAdmAdd" onclick="switchAdminTab('add')">➕ Add Item</button>
+        <button class="admin-tab" id="tabAdmManage" onclick="switchAdminTab('manage')">📝 Products</button>
+        <button class="admin-tab" id="tabAdmUsers" onclick="switchAdminTab('users')">👥 Users</button>
+        <button class="admin-tab" id="tabAdmPayments" onclick="switchAdminTab('payments')">💳 Payments</button>
+      </div>
+
+      <div id="admSectionDashboard">
+        <h3 style="margin:8px 0 10px;color:var(--primary-dark);">Store Overview</h3>
+        <div id="admDashboardStats" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;"></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:10px;">Data shown is stored in this browser only. Firebase/cloud sync is not configured.</p>
+      </div>
+
+      <!-- Tab: Orders Feed with Accept / Cancel -->
+      <div id="admSectionOrders" style="display:none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 12px; font-weight: 700; color: var(--muted);">Live Customer Orders</span>
+          <button onclick="loadAdminOrdersList()" class="cat-pill" style="padding: 4px 10px;">🔄 Sync</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: var(--muted);">Total Orders</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--primary);" id="admTotOrders">0</div>
+          </div>
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px; text-align: center;">
+            <div style="font-size: 11px; color: var(--muted);">Total Revenue</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--primary);">₹<span id="admTotSales">0</span></div>
+          </div>
+        </div>
+
+        <div id="admOrderItemsWrap" style="font-size: 13px;"></div>
+      </div>
+
+      <!-- Tab: Add Product With Stock Quantity -->
+      <div id="admSectionAdd" style="display: none;">
+        <h3 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 10px;">Add Inventory Item With Stock</h3>
+        
+        <input type="text" id="newProdName" placeholder="Product title (e.g. Fresh Cauliflower)">
+        
+        <div style="display: flex; gap: 8px;">
+          <input type="number" id="newProdPrice" placeholder="Price (₹)">
+          <select id="newProdUnit">
+            <option value="kg">per kg</option>
+            <option value="pc">per piece</option>
+            <option value="litre">per litre</option>
+            <option value="pack">per pack</option>
+          </select>
+        </div>
+
+        <label style="font-size: 11px; font-weight: 700; color: var(--muted);">Available Stock Quantity (Number of kg/pc/litre)</label>
+        <input type="number" id="newProdStock" placeholder="Available Quantity (e.g. 50)" value="50" min="0">
+
+        <select id="newProdCat">
+          <option value="Vegetables">Fresh Vegetables</option>
+          <option value="Groceries">Daily Groceries</option>
+        </select>
+
+        <label style="font-size: 11px; font-weight: 700; color: var(--muted);">Image Source</label>
+        <input type="file" id="newProdPhoto" accept="image/*">
+        <input type="text" id="newProdPhotoUrl" placeholder="Or paste image web link (https://...)">
+
+        <label style="font-size: 11px; font-weight: 700; color: var(--muted);">Optional Short Video Clip</label>
+        <input type="file" id="newProdVideo" accept="video/mp4,video/webm">
+
+        <button class="btn-block btn-primary" style="margin-top: 6px;" onclick="saveNewProduct()">Save & Publish Stock</button>
+      </div>
+
+      <!-- Tab: Catalog Management & Stock Edit -->
+      <div id="admSectionManage" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="color: var(--primary-dark); font-size: 14px;">Store Catalog & Quantities</h3>
+          <button onclick="restoreDefaults()" style="font-size: 10px; color: var(--primary); background: transparent; border: none; cursor: pointer; text-decoration: underline;">Reset to Default</button>
+        </div>
+        <div id="admProductsListWrap" style="font-size: 13px;"></div>
+      </div>
+
+      <div id="admSectionUsers" style="display:none;">
+        <h3 style="margin:8px 0;color:var(--primary-dark);">Registered Users</h3>
+        <input id="admUserSearch" placeholder="Search registration ID / phone" oninput="loadAdminUsers()">
+        <div id="admUsersListWrap"></div>
+      </div>
+
+      <div id="admSectionPayments" style="display:none;">
+        <h3 style="margin:8px 0;color:var(--primary-dark);">Payment Records</h3>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">Add transaction details after checking your payment gateway / bank statement. This page cannot verify UPI payments automatically.</p>
+        <div id="admPaymentsListWrap"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var cartItems = [];
+    var UPI_ID = "8134834380@mbk";
+    var STORE_SECRET_PIN = "8822";
+    var adminTapCount = 0;
+    var adminTapTimer = null;
+    var currentCatFilter = "All";
+    var activeScratchReward = 0.50;
+    var scratchRevealed = false;
+    var currentPlacedOrderId = null;
+
+    var defaultProducts = [
+      { id: 1, name: "Potato (Alu)", cat: "Vegetables", price: 27, unit: "kg", stock: 100, photo: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 2, name: "Tomato (Bilahi)", cat: "Vegetables", price: 35, unit: "kg", stock: 80, photo: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 3, name: "Onion (Piyaj)", cat: "Vegetables", price: 53, unit: "kg", stock: 60, photo: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 4, name: "Cucumber (Tiyoh)", cat: "Vegetables", price: 28, unit: "kg", stock: 45, photo: "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 5, name: "Cauliflower (Kobi)", cat: "Vegetables", price: 35, unit: "pc", stock: 30, photo: "https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 6, name: "Cabbage (Bandhakobi)", cat: "Vegetables", price: 30, unit: "pc", stock: 40, photo: "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 7, name: "Miniket Super Rice", cat: "Groceries", price: 52, unit: "kg", stock: 150, photo: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 8, name: "Pure Mustard Oil", cat: "Groceries", price: 145, unit: "litre", stock: 50, photo: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 9, name: "Masoor Dal", cat: "Groceries", price: 95, unit: "kg", stock: 75, photo: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 10, name: "Refined Pure Sugar", cat: "Groceries", price: 44, unit: "kg", stock: 90, photo: "https://images.unsplash.com/photo-1622484212850-cab596d629f2?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 11, name: "Tata Salt", cat: "Groceries", price: 28, unit: "kg", stock: 120, photo: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80", video: "" },
+      { id: 12, name: "Chakki Fresh Atta", cat: "Groceries", price: 42, unit: "kg", stock: 85, photo: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80", video: "" }
+    ];
+
+    window.addEventListener("DOMContentLoaded", function() {
+      initProducts();
+      initApp();
+      renderStoreProducts();
+    });
+
+    function initProducts() {
+      var saved = localStorage.getItem('fv_store_products');
+      if (!saved || saved.indexOf("stock") === -1) {
+        localStorage.setItem('fv_store_products', JSON.stringify(defaultProducts));
+      }
+    }
+
+    function restoreDefaults() {
+      if (!confirm("Reset all products to default images, stock & prices?")) return;
+      localStorage.setItem('fv_store_products', JSON.stringify(defaultProducts));
+      renderStoreProducts();
+      loadAdminProductsManage();
+    }
+
+    function getStoreProducts() {
+      return JSON.parse(localStorage.getItem('fv_store_products') || '[]');
+    }
+
+    function renderStoreProducts() {
+      var grid = document.getElementById('productsGrid');
+      var products = getStoreProducts();
+      var q = (document.getElementById('searchInput').value || "").toLowerCase().trim();
+      var html = "";
+
+      products.forEach(function(p) {
+        var matchesQ = !q || p.name.toLowerCase().includes(q);
+        var matchesCat = (currentCatFilter === 'All') || (p.cat === currentCatFilter);
+
+        if (!matchesQ || !matchesCat) return;
+
+        var currentStock = (p.stock !== undefined) ? parseInt(p.stock) : 50;
+        var isOutOfStock = currentStock <= 0;
+
+        var mediaHtml = "";
+        if (p.video) {
+          mediaHtml = '<video src="' + p.video + '" autoplay loop muted playsinline></video>';
+        } else {
+          var imgUrl = p.photo || "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80";
+          mediaHtml = '<img src="' + imgUrl + '" alt="' + p.name + '" loading="lazy">';
+        }
+
+        html += '<div class="product-card">' +
+                  '<div class="product-media-wrap">' +
+                    '<span class="product-cat-tag">' + p.cat + '</span>' +
+                    '<span class="stock-badge ' + (isOutOfStock ? 'out' : '') + '">' +
+                      (isOutOfStock ? 'Sold Out' : currentStock + ' ' + p.unit + ' left') +
+                    '</span>' +
+                    mediaHtml +
+                  '</div>' +
+                  '<div class="product-name">' + p.name + '</div>' +
+                  '<div class="product-unit">Fresh stock /' + p.unit + '</div>' +
+                  '<div class="product-price">₹' + p.price + '</div>' +
+                  '<button class="btn-add" ' + (isOutOfStock ? 'disabled' : '') + ' onclick="addItem(' + p.id + ', \'' + p.name.replace(/'/g, "\\'") + '\', ' + p.price + ', \'' + p.unit + '\', this)">' +
+                    (isOutOfStock ? 'Out of Stock' : 'Add to Cart') +
+                  '</button>' +
+                '</div>';
+      });
+
+      grid.innerHTML = html || "<p style='grid-column: span 2; text-align:center; color:var(--muted); padding:20px;'>No items found in this section.</p>";
+    }
+
+    function setCategoryFilter(cat, btn) {
+      currentCatFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(function(el) { el.classList.remove('active'); });
+      btn.classList.add('active');
+      renderStoreProducts();
+    }
+
+    function doSearch() { renderStoreProducts(); }
+
+    function initApp() {
+      var u = localStorage.getItem('fv_user');
+      var userType = localStorage.getItem('fv_user_type') || 'guest';
+      var w = parseFloat(localStorage.getItem('fv_wallet') || 0);
+      var r = localStorage.getItem('fv_ref');
+
+      if (userType === 'phone') {
+        if (!r) {
+          r = "FV" + Math.floor(1000 + Math.random() * 9000);
+          localStorage.setItem('fv_ref', r);
+          var codeMap = JSON.parse(localStorage.getItem('fv_ref_codes') || '{}');
+          codeMap[r] = u;
+          localStorage.setItem('fv_ref_codes', JSON.stringify(codeMap));
+        }
+        document.getElementById('myRefCode').value = r;
+      } else {
+        document.getElementById('myRefCode').value = "Phone Login Required";
+        document.getElementById('refNotice').innerText = "Referral rewards unlock for registered Mobile accounts only.";
+      }
+
+      if (u) {
+        var shortTitle = userType === 'phone' ? u.substring(0, 5) + ".." : (userType === 'gmail' ? "Gmail" : "Guest");
+        document.getElementById('headerUserName').innerText = shortTitle;
+        document.getElementById('userTag').innerText = userType === 'phone' ? "Verified" : "Guest";
+        if (userType === 'phone') { document.getElementById('cPhone').value = u; }
+      }
+      document.getElementById('walletBal').innerText = w.toFixed(2);
+    }
+
+    function showPopup(id) { document.getElementById(id).style.display = "flex"; }
+    function hidePopup(id) { document.getElementById(id).style.display = "none"; }
+
+    function secretAdminClick() {
+      adminTapCount++;
+      clearTimeout(adminTapTimer);
+      adminTapTimer = setTimeout(function() { adminTapCount = 0; }, 2000);
+
+      if (adminTapCount >= 5) {
+        adminTapCount = 0;
+        document.getElementById('secretAdminPin').value = "";
+        showPopup('adminSecretPopup');
+      }
+    }
+
+    function verifySecretAdmin() {
+      var pin = document.getElementById('secretAdminPin').value.trim();
+      if (pin === STORE_SECRET_PIN) {
+        hidePopup('adminSecretPopup');
+        switchAdminTab('dashboard');
+        showPopup('adminDashboardPopup');
+      } else {
+        alert("Incorrect PIN.");
+      }
+    }
+
+    function switchAdminTab(tab) {
+      ['dashboard','orders','add','manage','users','payments'].forEach(function(t) {
+        var section = document.getElementById('admSection' + t.charAt(0).toUpperCase() + t.slice(1));
+        var button = document.getElementById('tabAdm' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (section) section.style.display = (tab === t) ? 'block' : 'none';
+        if (button) button.classList.toggle('active', tab === t);
+      });
+      if (tab === 'dashboard') loadAdminDashboard();
+      if (tab === 'orders') loadAdminOrdersList();
+      if (tab === 'manage') loadAdminProductsManage();
+      if (tab === 'users') loadAdminUsers();
+      if (tab === 'payments') loadAdminPayments();
+    }
+
+    function loadAdminDashboard() {
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var accounts = JSON.parse(localStorage.getItem('fv_accounts') || '{}');
+      var products = getStoreProducts();
+      var paid = orders.filter(function(o){ return String(o.paymentStatus || '').toLowerCase() === 'successful'; });
+      var pending = orders.filter(function(o){ return !o.paymentStatus || String(o.paymentStatus).toLowerCase() === 'pending'; });
+      var sales = orders.filter(function(o){ return o.status !== 'Cancelled'; }).reduce(function(a,o){ return a + (Number(o.total)||0); },0);
+      var stats = [['Users',Object.keys(accounts).length],['Products',products.length],['Orders',orders.length],['Sales','₹'+sales.toFixed(2)],['Successful payments',paid.length],['Pending payments',pending.length]];
+      document.getElementById('admDashboardStats').innerHTML = stats.map(function(x){return '<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center"><small>'+x[0]+'</small><div style="font-size:20px;font-weight:800;color:var(--primary)">'+x[1]+'</div></div>';}).join('');
+    }
+
+    function loadAdminUsers() {
+      var accounts = JSON.parse(localStorage.getItem('fv_accounts') || '{}');
+      var q = (document.getElementById('admUserSearch').value || '').toLowerCase();
+      var rows = Object.keys(accounts).map(function(phone){ var a=accounts[phone]; return {phone:phone, account:a}; }).filter(function(x){return (x.phone+' '+(x.account.userId||'')).toLowerCase().includes(q);});
+      var wrap = document.getElementById('admUsersListWrap');
+      if (!rows.length) { wrap.innerHTML='<p style="padding:12px;color:var(--muted)">No registered users found in this browser.</p>'; return; }
+      wrap.innerHTML = rows.map(function(x){var id=x.account.userId||('FV-'+x.phone.slice(-6)); var blocked=!!x.account.blocked; return '<div style="border:1px solid var(--border);border-radius:9px;padding:10px;margin:8px 0;background:#fff"><b>'+id+'</b><div style="font-size:12px;margin:4px 0">Phone: '+x.phone+'<br>Registered: '+(x.account.createdAt||'Date not recorded')+'<br>Status: <b style="color:'+(blocked?'#dc2626':'#15803d')+'">'+(blocked?'Blocked':'Active')+'</b></div><button class="btn-primary" style="padding:6px 10px" onclick="toggleUserBlock(&quot;'+x.phone+'&quot;)">'+(blocked?'Unblock':'Block')+'</button></div>';}).join('');
+    }
+
+    function toggleUserBlock(phone) {
+      var accounts=JSON.parse(localStorage.getItem('fv_accounts')||'{}'); if(!accounts[phone]) return;
+      accounts[phone].blocked=!accounts[phone].blocked; localStorage.setItem('fv_accounts',JSON.stringify(accounts)); loadAdminUsers();
+    }
+
+    function loadAdminPayments() {
+      var orders=JSON.parse(localStorage.getItem('fv_orders')||'[]'); var wrap=document.getElementById('admPaymentsListWrap');
+      if(!orders.length){wrap.innerHTML='<p style="padding:12px;color:var(--muted)">No orders/payment records yet.</p>';return;}
+      wrap.innerHTML=orders.slice().reverse().map(function(o){var idx=orders.indexOf(o); var status=o.paymentStatus||'Pending'; return '<div style="border:1px solid var(--border);border-radius:9px;padding:10px;margin:8px 0;background:#fff"><b>Order '+(o.orderId||'')+'</b><div style="font-size:12px;margin:4px 0">Amount: ₹'+(o.total||0)+' | Method: '+(o.payment||'N/A')+'<br>Transaction ID: '+(o.transactionId||'Not added')+'<br>Date: '+(o.paymentDate||o.date||'Not recorded')+'<br>Status: <b>'+status+'</b></div><button class="btn-primary" style="padding:6px 9px" onclick="editPaymentRecord('+idx+')">Update payment record</button></div>';}).join('');
+    }
+
+    function editPaymentRecord(idx) {
+      var orders=JSON.parse(localStorage.getItem('fv_orders')||'[]'); var o=orders[idx]; if(!o)return;
+      var txn=prompt('Transaction / UTR ID (blank if not available):',o.transactionId||''); if(txn===null)return;
+      var status=prompt('Payment status: Pending, Successful, or Failed',o.paymentStatus||'Pending'); if(status===null)return;
+      status=status.trim(); if(!['Pending','Successful','Failed'].includes(status)){alert('Use Pending, Successful, or Failed.');return;}
+      o.transactionId=txn.trim(); o.paymentStatus=status; o.paymentDate=o.paymentDate||new Date().toLocaleString();
+      localStorage.setItem('fv_orders',JSON.stringify(orders)); loadAdminPayments(); loadAdminDashboard();
+    }
+
+    function fileToBase64(file) {
+      return new Promise(function(resolve, reject) {
+        if (!file) { resolve(""); return; }
+        var reader = new FileReader();
+        reader.onload = function(e) { resolve(e.target.result); };
+        reader.onerror = function(err) { reject(err); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function saveNewProduct() {
+      var name = document.getElementById('newProdName').value.trim();
+      var price = parseFloat(document.getElementById('newProdPrice').value);
+      var unit = document.getElementById('newProdUnit').value;
+      var stock = parseInt(document.getElementById('newProdStock').value) || 0;
+      var cat = document.getElementById('newProdCat').value;
+      var photoUrl = document.getElementById('newProdPhotoUrl').value.trim();
+      var photoFile = document.getElementById('newProdPhoto').files[0];
+      var videoFile = document.getElementById('newProdVideo').files[0];
+
+      if (!name || isNaN(price) || price <= 0) {
+        alert("Enter item title & valid price.");
+        return;
+      }
+
+      var finalPhoto = photoUrl;
+      var finalVideo = "";
+
+      try {
+        if (photoFile) finalPhoto = await fileToBase64(photoFile);
+        if (videoFile) finalVideo = await fileToBase64(videoFile);
+      } catch (e) {
+        alert("File conversion issue.");
+        return;
+      }
+
+      var products = getStoreProducts();
+      products.push({
+        id: Date.now(),
+        name: name,
+        cat: cat,
+        price: price,
+        unit: unit,
+        stock: stock,
+        photo: finalPhoto || "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80",
+        video: finalVideo
+      });
+
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      alert("✓ Item with stock " + stock + " " + unit + " saved.");
+      document.getElementById('newProdName').value = "";
+      document.getElementById('newProdPrice').value = "";
+      renderStoreProducts();
+      switchAdminTab('manage');
+    }
+
+    function loadAdminProductsManage() {
+      var products = getStoreProducts();
+      var wrap = document.getElementById('admProductsListWrap');
+      var html = "";
+
+      products.forEach(function(p) {
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); border-radius:10px; padding:8px 12px; margin-bottom:8px; background:#fff;">' +
+                  '<div>' +
+                    '<b>' + p.name + '</b><br>' +
+                    '<small style="color:var(--muted);">' + p.cat + ' • ₹' + p.price + '/' + p.unit + ' • <b>Stock: ' + (p.stock || 0) + ' ' + p.unit + '</b></small>' +
+                  '</div>' +
+                  '<div style="display:flex; gap:6px; flex-wrap:wrap;">' +
+                    '<button onclick="editProduct(' + p.id + ')" style="background:#dcfce7; color:#166534; border:none; padding:5px 8px; border-radius:6px; font-weight:700; cursor:pointer;">Edit</button>' +
+                    '<button onclick="quickUpdateStock(' + p.id + ')" style="background:#e0f2fe; color:#0369a1; border:none; padding:5px 8px; border-radius:6px; font-weight:700; cursor:pointer;">+Stock</button>' +
+                    '<button onclick="deleteProduct(' + p.id + ')" style="background:#fee2e2; color:#b91c1c; border:none; padding:5px 8px; border-radius:6px; font-weight:700; cursor:pointer;">Delete</button>' +
+                  '</div>' +
+                '</div>';
+      });
+
+      wrap.innerHTML = html;
+    }
+
+    async function editProduct(id) {
+      var products = getStoreProducts();
+      var p = products.find(function(it) { return it.id === id; });
+      if (!p) return;
+
+      var name = prompt("Product name:", p.name);
+      if (name === null) return;
+      name = name.trim();
+      if (!name) { alert("Product name cannot be empty."); return; }
+
+      var priceText = prompt("Price in ₹ per " + p.unit + ":", p.price);
+      if (priceText === null) return;
+      var price = Number(priceText);
+      if (!Number.isFinite(price) || price <= 0) { alert("Enter a valid price."); return; }
+
+      var category = prompt("Category (Vegetables / Groceries):", p.cat || "Vegetables");
+      if (category === null) return;
+      category = category.trim(); if (!category) { alert("Category cannot be empty."); return; }
+      var stockText = prompt("Available stock (" + p.unit + "):", p.stock || 0);
+      if (stockText === null) return;
+      var stock = Number(stockText);
+      if (!Number.isFinite(stock) || stock < 0) { alert("Enter a valid stock quantity."); return; }
+
+      var photo = prompt("Product photo URL (leave unchanged by pressing Cancel):", p.photo || "");
+      p.name = name;
+      p.price = price;
+      p.cat = category;
+      p.stock = stock;
+      if (photo !== null && photo.trim()) p.photo = photo.trim();
+      p.video = "";
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      renderStoreProducts();
+      loadAdminProductsManage();
+      alert("Product updated. Note: changes are saved in this browser only.");
+    }
+
+    function quickUpdateStock(id) {
+      var products = getStoreProducts();
+      var p = products.find(function(it) { return it.id === id; });
+      if (!p) return;
+      var newQty = prompt("Update stock quantity for " + p.name + " (" + p.unit + "):", p.stock || 0);
+      if (newQty !== null && !isNaN(newQty) && newQty !== "") {
+        p.stock = parseInt(newQty);
+        localStorage.setItem('fv_store_products', JSON.stringify(products));
+        renderStoreProducts();
+        loadAdminProductsManage();
+      }
+    }
+
+    function deleteProduct(id) {
+      if (!confirm("Delete this product?")) return;
+      var products = getStoreProducts().filter(function(p) { return p.id !== id; });
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      renderStoreProducts();
+      loadAdminProductsManage();
+    }
+
+    function loadAdminOrdersList() {
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var wrap = document.getElementById('admOrderItemsWrap');
+      var totalSales = 0;
+
+      if (orders.length === 0) {
+        wrap.innerHTML = "<p style='text-align:center; color:var(--muted); padding:16px;'>No customer orders yet.</p>";
+        document.getElementById('admTotOrders').innerText = "0";
+        document.getElementById('admTotSales').innerText = "0";
+        return;
+      }
+
+      var html = "";
+      orders.slice().reverse().forEach(function(ord, revIdx) {
+        var originalIdx = orders.length - 1 - revIdx;
+        if (ord.status !== "Cancelled") totalSales += Number(ord.total) || 0;
+        var curStatus = ord.status || "Received";
+
+        var statusBadgeColor = "#0284c7";
+        if (curStatus === "Accepted") statusBadgeColor = "#16a34a";
+        if (curStatus === "Packed") statusBadgeColor = "#d97706";
+        if (curStatus === "Out for Delivery") statusBadgeColor = "#7c3aed";
+        if (curStatus === "Delivered") statusBadgeColor = "#127032";
+        if (curStatus === "Cancelled") statusBadgeColor = "#dc2626";
+
+        html += '<div style="border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; background: #fafcfb;">' +
+                  '<div style="display:flex; justify-content:space-between; font-weight:700;">' +
+                    '<span style="color:var(--primary);">' + ord.orderId + '</span>' +
+                    '<span style="font-size:11px; padding:2px 8px; border-radius:10px; color:#fff; background:' + statusBadgeColor + ';">' + curStatus + '</span>' +
+                  '</div>' +
+                  '<div style="font-size:12px; margin-top:4px;">' + ord.customer + ' (' + ord.phone + ')</div>' +
+                  '<div style="font-size:12px; color:var(--muted);">' + ord.village + ', ' + ord.address + '</div>' +
+                  '<div style="background:#fff; border:1px solid #edf2ee; padding:6px 8px; border-radius:6px; margin:6px 0; font-size:11px;">' +
+                    ord.items.map(function(i){ return i.name + ' × ' + i.qty + ' (₹' + (i.price*i.qty) + ')'; }).join('<br>') +
+                  '</div>' +
+                  '<div style="display:flex; justify-content:space-between; margin-bottom:8px;">' +
+                    '<span>Payment: ' + ord.payment + '</span><b>₹' + ord.total + '</b>' +
+                  '</div>';
+
+        if (curStatus === "Received" || curStatus === "Placed") {
+          html += '<div style="display:flex; gap:6px;">' +
+                    '<button onclick="admAcceptOrder(' + originalIdx + ')" class="btn-block btn-primary" style="padding:7px; font-size:12px; flex:1;">✓ Accept Order</button>' +
+                    '<button onclick="admCancelOrder(' + originalIdx + ')" class="btn-block btn-danger" style="padding:7px; font-size:12px; flex:1;">✕ Cancel Order</button>' +
+                  '</div>';
+        } else if (curStatus !== "Cancelled") {
+          html += '<div style="display:flex; gap:6px;">' +
+                    '<select id="admSel_' + originalIdx + '" style="margin-bottom:0; padding:6px; font-size:12px; flex:1;">' +
+                      '<option value="Accepted" ' + (curStatus==='Accepted'?'selected':'') + '>Accepted</option>' +
+                      '<option value="Packed" ' + (curStatus==='Packed'?'selected':'') + '>Packed</option>' +
+                      '<option value="Out for Delivery" ' + (curStatus==='Out for Delivery'?'selected':'') + '>Out for Delivery</option>' +
+                      '<option value="Delivered" ' + (curStatus==='Delivered'?'selected':'') + '>Delivered</option>' +
+                    '</select>' +
+                    '<button onclick="admSaveStatus(' + originalIdx + ')" class="btn-primary" style="padding:6px 12px; border-radius:8px; border:none; cursor:pointer;">Update</button>' +
+                    '<button onclick="admCancelOrder(' + originalIdx + ')" class="btn-danger" style="padding:6px 10px; border-radius:8px; border:none; cursor:pointer;">Cancel</button>' +
+                  '</div>';
+        } else {
+          html += '<div style="font-size:11px; color:#dc2626; font-weight:700;">Order Cancelled. Scratch Bonus voided.</div>';
+        }
+
+        html += '</div>';
+      });
+
+      wrap.innerHTML = html;
+      document.getElementById('admTotOrders').innerText = orders.length;
+      document.getElementById('admTotSales').innerText = totalSales;
+    }
+
+    function admAcceptOrder(idx) {
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var ord = orders[idx];
+      ord.status = "Accepted";
+
+      if (ord.pendingScratchBonus && !ord.scratchBonusCredited) {
+        var currentW = parseFloat(localStorage.getItem('fv_wallet') || 0);
+        var updated = currentW + parseFloat(ord.pendingScratchBonus);
+        localStorage.setItem('fv_wallet', updated.toFixed(2));
+        ord.scratchBonusCredited = true;
+        document.getElementById('walletBal').innerText = updated.toFixed(2);
+    }
+
+      localStorage.setItem('fv_orders', JSON.stringify(orders));
+      alert("Order #" + ord.orderId + " ACCEPTED! Scratch reward credited.");
+      loadAdminOrdersList();
+    }
+
+    function admCancelOrder(idx) {
+      if (!confirm("Are you sure you want to CANCEL this order? (Scratch Card bonus will be VOIDED and not credited)")) return;
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var ord = orders[idx];
+      ord.status = "Cancelled";
+      ord.pendingScratchBonus = 0;
+
+      if (ord.payment === "WALLET") {
+        var currentW = parseFloat(localStorage.getItem('fv_wallet') || 0);
+        var refunded = currentW + parseFloat(ord.total);
+        localStorage.setItem('fv_wallet', refunded.toFixed(2));
+        document.getElementById('walletBal').innerText = refunded.toFixed(2);
+        alert("Order #" + ord.orderId + " Cancelled. ₹" + ord.total + " refunded back to wallet.");
+      } else {
+        alert("Order #" + ord.orderId + " Cancelled. Scratch bonus voided.");
+      }
+
+      localStorage.setItem('fv_orders', JSON.stringify(orders));
+      loadAdminOrdersList();
+    }
+
+    function admSaveStatus(idx) {
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var sel = document.getElementById('admSel_' + idx);
+      if (!sel) return;
+
+      orders[idx].status = sel.value;
+      localStorage.setItem('fv_orders', JSON.stringify(orders));
+      alert("Order #" + orders[idx].orderId + " updated to: " + sel.value);
+      loadAdminOrdersList();
+    }
+
+    function openScratchCardFromOrder() {
+      hidePopup('cartPopup');
+      
+      var isOneRupee = Math.random() < 0.10;
+      activeScratchReward = isOneRupee ? 1.00 : 0.50;
+      scratchRevealed = false;
+
+      document.getElementById('scratchAmountDisplay').innerText = activeScratchReward.toFixed(2);
+      document.getElementById('btnScratchCollect').style.display = "none";
+      document.getElementById('scratchNotice').innerText = "Scratch with your finger/mouse to reveal!";
+
+      showPopup('scratchPopup');
+      setupScratchCanvas();
+    }
+
+    function setupScratchCanvas() {
+      var canvas = document.getElementById('scratchCanvas');
+      var ctx = canvas.getContext('2d');
+      var isDrawing = false;
+
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#b5b5b5';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#8c8c8c';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ SCRATCH & WIN ★', 120, 110);
+      ctx.font = '12px sans-serif';
+      ctx.fillText('UP TO ₹100 CASHBACK', 120, 135);
+
+      function scratch(e) {
+        if (!isDrawing || scratchRevealed) return;
+        var rect = canvas.getBoundingClientRect();
+        var x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+        var y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        scratchRevealed = true;
+        document.getElementById('btnScratchCollect').style.display = "block";
+        document.getElementById('scratchNotice').innerText = "🎉 Revealed ₹" + activeScratchReward.toFixed(2) + "! Tap below to lock.";
+      }
+
+      canvas.onmousedown = function() { isDrawing = true; };
+      window.onmouseup = function() { isDrawing = false; };
+      canvas.onmousemove = scratch;
+
+      canvas.ontouchstart = function() { isDrawing = true; };
+      window.ontouchend = function() { isDrawing = false; };
+      canvas.ontouchmove = scratch;
+    }
+
+    function collectScratchCash() {
+      if (currentPlacedOrderId) {
+        var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+        var ord = orders.find(function(o) { return o.orderId === currentPlacedOrderId; });
+        if (ord) {
+          ord.pendingScratchBonus = activeScratchReward;
+          ord.scratchBonusCredited = false;
+          localStorage.setItem('fv_orders', JSON.stringify(orders));
+        }
+      }
+
+      alert("🎉 ₹" + activeScratchReward.toFixed(2) + " Reward Locked!\nIt will be credited to your wallet once the store accepts your order.");
+      hidePopup('scratchPopup');
+    }
+
+    function openUserProfile() {
+      var u = localStorage.getItem('fv_user');
+      if (!u) { showPopup('loginPopup'); return; }
+      var userType = localStorage.getItem('fv_user_type') || 'guest';
+      document.getElementById('profUserTitle').innerText = u;
+      document.getElementById('profUserBadge').innerText = userType === 'phone' ? "Verified Mobile" : "Guest Account";
+
+      loadUserOrdersInProfile();
+      loadUserReferralInProfile();
+      switchProfileTab('orders');
+      showPopup('profilePopup');
+    }
+
+    function switchProfileTab(tab) {
+      document.getElementById('profSectionOrders').style.display = (tab === 'orders') ? 'block' : 'none';
+      document.getElementById('profSectionReferral').style.display = (tab === 'referral') ? 'block' : 'none';
+      document.getElementById('tabProfOrders').classList.toggle('active', tab === 'orders');
+      document.getElementById('tabProfRef').classList.toggle('active', tab === 'referral');
+    }
+
+    function loadUserOrdersInProfile() {
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var curUser = localStorage.getItem('fv_user');
+      var wrap = document.getElementById('profileOrdersList');
+
+      var myOrders = orders.filter(function(o) {
+        return o.phone === curUser || o.customer === curUser || (curUser && curUser.startsWith("Guest"));
+      });
+
+      if (myOrders.length === 0) {
+        wrap.innerHTML = "<p style='text-align:center; color:var(--muted); padding:20px;'>No orders found.</p>";
+        return;
+      }
+
+      var html = "";
+      myOrders.slice().reverse().forEach(function(ord) {
+        var statusText = ord.status || "Received";
+        var step = 1;
+        if (statusText === "Accepted") step = 2;
+        if (statusText === "Packed") step = 3;
+        if (statusText === "Out for Delivery") step = 3;
+        if (statusText === "Delivered") step = 4;
+
+        html += '<div style="border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:10px; background:#fff;">' +
+                  '<div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700;">' +
+                    '<span>' + ord.orderId + '</span><span style="color:var(--muted);">' + new Date(ord.date).toLocaleDateString() + '</span>' +
+                  '</div>' +
+                  '<div style="font-size:12px; color:var(--muted); margin:4px 0;">' + ord.items.map(function(i){ return i.name + ' (x' + i.qty + ')'; }).join(', ') + '</div>' +
+                  '<div style="display:flex; justify-content:space-between; font-size:12px;">' +
+                    '<b>₹' + ord.total + ' (' + ord.payment + ')</b>' +
+                    '<b style="color:' + (statusText === 'Cancelled' ? '#dc2626' : 'var(--primary)') + ';">' + statusText + '</b>' +
+                  '</div>';
+
+        if (statusText !== "Cancelled") {
+          html += '<div class="track-step-wrap">' +
+                    '<div class="step-item ' + (step >= 1 ? 'active' : '') + '"><div class="step-dot">1</div><div class="step-title">Received</div></div>' +
+                    '<div class="step-item ' + (step >= 2 ? 'active' : '') + '"><div class="step-dot">2</div><div class="step-title">Accepted</div></div>' +
+                    '<div class="step-item ' + (step >= 3 ? 'active' : '') + '"><div class="step-dot">3</div><div class="step-title">Dispatch</div></div>' +
+                    '<div class="step-item ' + (step >= 4 ? 'active' : '') + '"><div class="step-dot">4</div><div class="step-title">Delivered</div></div>' +
+                  '</div>';
+        }
+
+        html += '</div>';
+      });
+
+      wrap.innerHTML = html;
+    }
+
+    function loadUserReferralInProfile() {
+      var curUser = localStorage.getItem('fv_user');
+      var allComm = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
+      var myComm = allComm.filter(function(c) { return c.referrer === curUser; });
+
+      var totalEarned = myComm.reduce(function(sum, item) { return sum + item.bonus; }, 0);
+      var referredSet = new Set(myComm.map(function(item) { return item.referredUser; }));
+
+      document.getElementById('profTotalReferred').innerText = referredSet.size;
+      document.getElementById('profTotalComm').innerText = totalEarned.toFixed(2);
+
+      var wrap = document.getElementById('profCommHistoryWrap');
+      if (myComm.length === 0) {
+        wrap.innerHTML = "<p style='text-align:center; color:var(--muted); padding:12px;'>Share your code to earn bonuses.</p>";
+        return;
+      }
+
+      var html = "";
+      myComm.slice().reverse().forEach(function(item) {
+        html += '<div style="background:#fff; border:1px solid var(--border); border-radius:8px; padding:8px; margin-bottom:6px;">' +
+                  '<div style="display:flex; justify-content:space-between; font-weight:700;">' +
+                    '<span style="color:var(--primary);">+ ₹' + item.bonus + '</span><small style="color:var(--muted);">' + new Date(item.date).toLocaleDateString() + '</small>' +
+                  '</div>' +
+                  '<div style="color:var(--muted); font-size:11px;">' + item.reason + '</div>' +
+                '</div>';
+      });
+      wrap.innerHTML = html;
+    }
+
+    function userLogout() {
+      if (!confirm("Log out now?")) return;
+      localStorage.removeItem('fv_user');
+      localStorage.removeItem('fv_user_type');
+      window.location.reload();
+    }
+
+    function viewPlacedOrderTrack() {
+      hidePopup('cartPopup');
+      openUserProfile();
+    }
+
+    function addItem(id, name, price, unit, btn) {
+      var products = getStoreProducts();
+      var p = products.find(function(it) { return it.id === id; });
+      var stock = p ? (p.stock || 0) : 50;
+
+      var existing = cartItems.find(function(it) { return it.id === id; });
+      var requestedQty = existing ? (existing.qty + 1) : 1;
+
+      if (requestedQty > stock) {
+        alert("Sorry! Only " + stock + " " + unit + " available in stock.");
+        return;
+      }
+
+      if (existing) { existing.qty += 1; }
+      else { cartItems.push({ id: id, name: name, price: price, unit: unit, qty: 1 }); }
+
+      updateCartBadge();
+      btn.innerText = "✓ Added";
+      setTimeout(function() { btn.innerText = "Add to Cart"; }, 700);
+    }
+
+    function updateCartBadge() {
+      var count = cartItems.reduce(function(s, i) { return s + i.qty; }, 0);
+      document.getElementById('cartCount').innerText = count;
+    }
+
+    function changeQty(id, delta) {
+      var item = cartItems.find(function(it) { return it.id === id; });
+      if (!item) return;
+
+      if (delta > 0) {
+        var products = getStoreProducts();
+        var p = products.find(function(it) { return it.id === id; });
+        var stock = p ? (p.stock || 0) : 50;
+        if (item.qty + 1 > stock) {
+          alert("Maximum available stock reached (" + stock + " " + item.unit + ").");
+          return;
+        }
+      }
+
+      item.qty += delta;
+      if (item.qty <= 0) { cartItems = cartItems.filter(function(it) { return it.id !== id; }); }
+      updateCartBadge();
+      renderCartUI();
+    }
+
+    function calculateTotals() {
+      var subtotal = cartItems.reduce(function(s, i) { return s + (i.price * i.qty); }, 0);
+      var fee = (subtotal > 0 && subtotal < 300) ? 21 : 0;
+      return { subtotal: subtotal, fee: fee, total: subtotal + fee };
+    }
+
+    function showCartPopup() {
+      if (cartItems.length === 0) { alert("Cart is empty."); return; }
+      renderCartUI();
+      document.getElementById('checkoutFormWrapper').style.display = "block";
+      document.getElementById('orderSuccessSection').style.display = "none";
+      showPopup('cartPopup');
+    }
+
+    function renderCartUI() {
+      var list = document.getElementById('cartItemList');
+      var html = '<div style="max-height: 140px; overflow-y: auto; margin-bottom: 8px;">';
+      cartItems.forEach(function(item) {
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid #f0f4f1;">' +
+                  '<div><b>' + item.name + '</b><br><small style="color:var(--muted)">₹' + item.price + '/' + item.unit + '</small></div>' +
+                  '<div style="display:flex; align-items:center; gap:6px;">' +
+                    '<button onclick="changeQty(' + item.id + ', -1)" style="width:24px; height:24px; border:1px solid #ddd; background:#fff; border-radius:4px;">-</button>' +
+                    '<span>' + item.qty + '</span>' +
+                    '<button onclick="changeQty(' + item.id + ', 1)" style="width:24px; height:24px; border:1px solid #ddd; background:#fff; border-radius:4px;">+</button>' +
+                    '<span style="font-weight:700; width:45px; text-align:right;">₹' + (item.price * item.qty) + '</span>' +
+                  '</div>' +
+                '</div>';
+      });
+      html += '</div>';
+      list.innerHTML = html;
+
+      var totals = calculateTotals();
+      document.getElementById('subTotalVal').innerText = totals.subtotal;
+      document.getElementById('feeVal').innerText = totals.fee === 0 ? "FREE" : "₹" + totals.fee;
+      document.getElementById('finalTotalVal').innerText = totals.total;
+      updatePayView();
+    }
+
+    function updatePayView() {
+      var payType = document.querySelector('input[name="payType"]:checked').value;
+      var totals = calculateTotals();
+      if (payType === 'UPI') {
+        document.getElementById('qrBox').style.display = 'block';
+        document.getElementById('qrTotal').innerText = totals.total;
+        var upiUri = "upi://pay?pa=" + UPI_ID + "&pn=Fresh%20Veggie&am=" + totals.total + "&cu=INR";
+        document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=" + encodeURIComponent(upiUri);
+      } else {
+        document.getElementById('qrBox').style.display = 'none';
+      }
+    }
+
+    function placeOnlineOrder() {
+      var totals = calculateTotals();
+      if (totals.subtotal < 100) { alert("Minimum order is ₹100."); return; }
+
+      var name = document.getElementById('cName').value.trim();
+      var phone = document.getElementById('cPhone').value.trim();
+      var village = document.getElementById('cVillage').value;
+      var address = document.getElementById('cAddress').value.trim();
+      var payType = document.querySelector('input[name="payType"]:checked').value;
+
+      if (!name || phone.length !== 10 || !village || !address) {
+        alert("Please complete all delivery fields.");
+        return;
+      }
+
+      if (payType === 'WALLET') {
+        var wBal = parseFloat(localStorage.getItem('fv_wallet') || 0);
+        if (wBal < totals.total) { alert("Insufficient wallet balance."); return; }
+        localStorage.setItem('fv_wallet', (wBal - totals.total).toFixed(2));
+        document.getElementById('walletBal').innerText = (wBal - totals.total).toFixed(2);
+      }
+
+      var products = getStoreProducts();
+      cartItems.forEach(function(cartIt) {
+        var p = products.find(function(item) { return item.id === cartIt.id; });
+        if (p && p.stock !== undefined) {
+          p.stock = Math.max(0, p.stock - cartIt.qty);
+        }
+      });
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      renderStoreProducts();
+
+      var orderId = "FV-" + Math.floor(10000 + Math.random() * 90000);
+      currentPlacedOrderId = orderId;
+
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      orders.push({
+        orderId: orderId,
+        customer: name,
+        phone: phone,
+        village: village,
+        address: address,
+        items: cartItems.slice(),
+        total: totals.total,
+        payment: payType,
+        status: "Received",
+        pendingScratchBonus: 0,
+        scratchBonusCredited: false,
+        date: new Date().toISOString()
+      });
+      localStorage.setItem('fv_orders', JSON.stringify(orders));
+
+      var u = localStorage.getItem('fv_user');
+      if (u) {
+        var accounts = JSON.parse(localStorage.getItem('fv_accounts') || '{}');
+        if (accounts[u]) {
+          accounts[u].orderCount = (accounts[u].orderCount || 0) + 1;
+          var refCodeUsed = accounts[u].referredBy;
+          if (refCodeUsed) {
+            var codeMap = JSON.parse(localStorage.getItem('fv_ref_codes') || '{}');
+            var referrerPhone = codeMap[refCodeUsed];
+            if (referrerPhone && referrerPhone !== u) {
+              var commHistory = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
+              var bonusEarned = (accounts[u].orderCount === 1 ? 5 : 0) + (Math.floor(totals.total / 1000) * 5);
+              if (bonusEarned > 0) {
+                commHistory.push({ referrer: referrerPhone, referredUser: u, bonus: bonusEarned, reason: "Order Bonus", date: new Date().toISOString() });
+                localStorage.setItem('fv_referral_history', JSON.stringify(commHistory));
+                var curW = parseFloat(localStorage.getItem('fv_wallet') || 0);
+                localStorage.setItem('fv_wallet', (curW + bonusEarned).toFixed(2));
+                document.getElementById('walletBal').innerText = (curW + bonusEarned).toFixed(2);
+              }
+            }
+          }
+          localStorage.setItem('fv_accounts', JSON.stringify(accounts));
+        }
+      }
+
+      document.getElementById('displayOrderId').innerText = orderId;
+      document.getElementById('displayOrderCustomer').innerText = name + " (" + phone + ")";
+      document.getElementById('displayOrderArea').innerText = village + ", " + address;
+      document.getElementById('displayOrderAmount').innerText = totals.total;
+      document.getElementById('displayOrderPay').innerText = payType;
+
+      document.getElementById('checkoutFormWrapper').style.display = "none";
+      document.getElementById('orderSuccessSection').style.display = "block";
+    }
+
+    function resetAndCloseOrder() {
+      cartItems = [];
+      updateCartBadge();
+      hidePopup('cartPopup');
+    }
+
+    function setTopupAmount(amt) {
+      document.getElementById('topupAmt').value = amt;
+      genTopupQr();
+    }
+
+    function genTopupQr() {
+      var amt = parseFloat(document.getElementById('topupAmt').value);
+      if (amt && amt >= 10) {
+        document.getElementById('topupQrArea').style.display = "block";
+        var upiUri = "upi://pay?pa=" + UPI_ID + "&pn=Fresh%20Veggie%20Wallet&am=" + amt + "&cu=INR";
+        document.getElementById('topupQrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=" + encodeURIComponent(upiUri);
+      } else {
+        document.getElementById('topupQrArea').style.display = "none";
+      }
+    }
+
+    function confirmTopup() {
+      var amt = parseFloat(document.getElementById('topupAmt').value);
+      if (!amt || amt < 10) { alert("Enter valid amount (min ₹10)."); return; }
+      var cur = parseFloat(localStorage.getItem('fv_wallet') || 0);
+      var updated = cur + amt;
+      localStorage.setItem('fv_wallet', updated.toFixed(2));
+      document.getElementById('walletBal').innerText = updated.toFixed(2);
+      alert("✓ ₹" + amt + " credited to wallet.");
+      hidePopup('walletPopup');
+    }
+
+    function toggleAuthView(view) {
+      document.getElementById('registerBox').style.display = (view === 'login') ? 'none' : 'block';
+      document.getElementById('loginFormBox').style.display = (view === 'login') ? 'block' : 'none';
+    }
+
+    function handleRegister() {
+      var p = document.getElementById('regPhone').value.trim();
+      var pass = document.getElementById('regPass').value.trim();
+      var ref = document.getElementById('refInput').value.trim();
+
+      if (p.length !== 10) { alert("10-digit number required."); return; }
+      if (pass.length < 6) { alert("Password min 6 chars."); return; }
+
+      var accs = JSON.parse(localStorage.getItem('fv_accounts') || '{}');
+      if (accs[p]) { alert("Account already exists with this phone!"); return; }
+
+      accs[p] = { pass: pass, referredBy: ref || null, orderCount: 0, userId: 'FV-' + Date.now().toString(36).toUpperCase(), createdAt: new Date().toLocaleString(), blocked: false };
+      localStorage.setItem('fv_accounts', JSON.stringify(accs));
+      localStorage.setItem('fv_user', p);
+      localStorage.setItem('fv_user_type', 'phone');
+
+      var currentW = parseFloat(localStorage.getItem('fv_wallet') || 0);
+      var updatedW = currentW + 20.00;
+      localStorage.setItem('fv_wallet', updatedW.toFixed(2));
+      document.getElementById('walletBal').innerText = updatedW.toFixed(2);
+
+      hidePopup('loginPopup');
+      showPopup('welcomeBonusPopup');
+      initApp();
+    }
+
+    function handleLogin() {
+      var p = document.getElementById('logPhone').value.trim();
+      var pass = document.getElementById('logPass').value.trim();
+      var accs = JSON.parse(localStorage.getItem('fv_accounts') || '{}');
+
+      if (accs[p] && accs[p].blocked) { alert("This account is blocked. Please contact the store."); return; }
+      if (accs[p] && accs[p].pass === pass) {
+        localStorage.setItem('fv_user', p);
+        localStorage.setItem('fv_user_type', 'phone');
+        window.location.reload();
+      } else {
+        alert("Invalid phone or password.");
+      }
+    }
+
+    function continueWithGmail() {
+      var email = prompt("Enter your Gmail address:");
+      if (!email || !email.includes("@")) return;
+      localStorage.setItem('fv_user', email);
+      localStorage.setItem('fv_user_type', 'gmail');
+      window.location.reload();
+    }
+
+    function continueAsGuest() {
+      var gid = "Guest_" + Math.floor(100 + Math.random() * 900);
+      localStorage.setItem('fv_user', gid);
+      localStorage.setItem('fv_user_type', 'guest');
+      window.location.reload();
+    }
+
+    function copyCode() {
+      var el = document.getElementById('myRefCode');
+      el.select();
+      navigator.clipboard.writeText(el.value);
+      alert("Code copied!");
+    }
+  </script>
+</body>
+</html>
