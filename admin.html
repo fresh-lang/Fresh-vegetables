@@ -111,7 +111,6 @@
     .auth-box { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 24px; max-width: 320px; width: 100%; text-align: center; }
     .auth-box input { font-size: 20px; text-align: center; letter-spacing: 6px; margin: 12px 0; }
 
-    /* PRINT INVOICE STYLES */
     @media print {
       body * { visibility: hidden; }
       #printableReceipt, #printableReceipt * { visibility: visible; }
@@ -121,13 +120,13 @@
 </head>
 <body>
 
-  <!-- ADMIN AUTH SCREEN -->
+  <!-- ADMIN AUTH SCREEN (PIN 8822 ONLY) -->
   <div id="adminAuthScreen">
     <div class="auth-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🔐</div>
       <h3 style="color: var(--green-dark);">Store Admin Access</h3>
-      <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Enter PIN (PIN: 8822)</p>
-      <input type="password" id="adminPin" placeholder="••••" maxlength="4">
+      <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Enter PIN: <b>8822</b></p>
+      <input type="password" id="adminPin" placeholder="••••" maxlength="4" autocomplete="off">
       <button class="btn-action btn-green" style="width: 100%; padding: 11px;" onclick="verifyPin()">Unlock Dashboard</button>
     </div>
   </div>
@@ -279,10 +278,24 @@
       { id: 10, name: "Refined Pure Sugar", cat: "Groceries", price: 44, unit: "kg", stock: 90, photo: "https://images.unsplash.com/photo-1622484212850-cab596d629f2?auto=format&fit=crop&w=400&q=80" }
     ];
 
+    // Check if user came from verified 5-tap on index.html
+    function initAdminAuth() {
+      var isAuth = sessionStorage.getItem('fv_admin_authenticated');
+      if (isAuth === 'true') {
+        document.getElementById('adminAuthScreen').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'flex';
+        renderOrders();
+      } else {
+        document.getElementById('adminAuthScreen').style.display = 'flex';
+        document.getElementById('adminDashboard').style.display = 'none';
+      }
+    }
+
     function verifyPin() {
-      var pin = document.getElementById('adminPin').value.trim();
-      // Only 8822 allowed, 1234 completely removed
+      var pin = (document.getElementById('adminPin').value || '').trim();
+      // Only 8822 allowed, 1234 completely disabled
       if (pin === "8822") {
+        sessionStorage.setItem('fv_admin_authenticated', 'true');
         document.getElementById('adminAuthScreen').style.display = "none";
         document.getElementById('adminDashboard').style.display = "flex";
         renderOrders();
@@ -292,6 +305,7 @@
     }
 
     function logoutAdmin() {
+      sessionStorage.removeItem('fv_admin_authenticated');
       document.getElementById('adminPin').value = "";
       document.getElementById('adminAuthScreen').style.display = "flex";
       document.getElementById('adminDashboard').style.display = "none";
@@ -524,7 +538,7 @@
                   '</div>' +
                   '<div style="text-align:right;">' +
                     '<div style="font-size:16px; font-weight:800; color:var(--green-dark);">₹' + bal + '</div>' +
-                    '<button class="btn-action btn-green" style="padding:4px 8px; font-size:11px; margin-top:4px;" onclick="quickCreditPrompt('' + phone + '')">+ Add Cash</button>' +
+                    '<button class="btn-action btn-green" style="padding:4px 8px; font-size:11px; margin-top:4px;" onclick="quickCreditPrompt(\'' + phone + '\')">+ Add Cash</button>' +
                   '</div>' +
                 '</div>';
       });
@@ -593,7 +607,7 @@
                     '<span style="font-size:12px; color:var(--muted);">📱 ' + phone + ' • Orders: <b>' + userOrderCount + '</b> • Wallet: <b>₹' + (Number(user.wallet)||0).toFixed(2) + '</b></span>' +
                   '</div>' +
                   '<div style="display:flex; gap:6px;">' +
-                    '<button class="btn-action ' + (isBlocked ? 'btn-green' : 'btn-del') + '" onclick="toggleBlockUser('' + phone + '')">' +
+                    '<button class="btn-action ' + (isBlocked ? 'btn-green' : 'btn-del') + '" onclick="toggleBlockUser(\'' + phone + '\')">' +
                       (isBlocked ? 'Unblock User' : 'Block User') +
                     '</button>' +
                   '</div>' +
@@ -733,6 +747,9 @@
       document.getElementById('newPPrice').value = "";
       switchTab('products');
     }
+
+    // Auto run on load
+    window.onload = initAdminAuth;
   </script>
 </body>
 </html>

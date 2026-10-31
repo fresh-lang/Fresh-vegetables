@@ -1705,11 +1705,12 @@
 
     function verifyPinAdmin() {
       var pin = document.getElementById('secretAdminPin').value.trim();
-      if (pin === STORE_SECRET_PIN || pin === "1234") {
+      if (pin === "8822") {
+        sessionStorage.setItem('fv_admin_authenticated', 'true');
         hidePopup('adminSecretPopup');
         window.location.href = "admin.html";
       } else {
-        alert("Incorrect PIN. Try 8822");
+        alert("Incorrect PIN. Enter PIN: 8822");
       }
     }
 
@@ -1779,6 +1780,12 @@
       });
       list.innerHTML = html;
 
+      var blockedList = JSON.parse(localStorage.getItem('fv_blocked_users') || '[]');
+      var phoneCheck = document.getElementById('cPhone').value.trim();
+      if (blockedList.includes(phoneCheck)) {
+        alert("Your account has been temporarily blocked by admin. Please contact support via WhatsApp (+91 8134834380).");
+        return;
+      }
       var totals = calculateTotals();
       document.getElementById('subTotalVal').innerText = totals.subtotal;
       document.getElementById('feeVal').innerText = totals.fee === 0 ? "FREE" : "₹" + totals.fee;
@@ -1788,6 +1795,12 @@
 
     function updatePayView() {
       var payType = document.querySelector('input[name="payType"]:checked').value;
+      var blockedList = JSON.parse(localStorage.getItem('fv_blocked_users') || '[]');
+      var phoneCheck = document.getElementById('cPhone').value.trim();
+      if (blockedList.includes(phoneCheck)) {
+        alert("Your account has been temporarily blocked by admin. Please contact support via WhatsApp (+91 8134834380).");
+        return;
+      }
       var totals = calculateTotals();
       if (payType === 'UPI') {
         document.getElementById('qrBox').style.display = 'block';
@@ -1834,6 +1847,12 @@
     }
 
     function placeOrder() {
+      var blockedList = JSON.parse(localStorage.getItem('fv_blocked_users') || '[]');
+      var phoneCheck = document.getElementById('cPhone').value.trim();
+      if (blockedList.includes(phoneCheck)) {
+        alert("Your account has been temporarily blocked by admin. Please contact support via WhatsApp (+91 8134834380).");
+        return;
+      }
       var totals = calculateTotals();
       if (totals.subtotal < 100) { alert("Minimum order is ₹100."); return; }
 
