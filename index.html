@@ -20,6 +20,8 @@
       --border: #e3ece6;
       --radius: 14px;
       --danger: #dc2626;
+      --purple: #9333ea;
+      --purple-light: #f3e8ff;
       --shadow: 0 4px 20px -2px rgba(18, 112, 50, 0.08);
       --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.12);
     }
@@ -292,6 +294,45 @@
       font-weight: 700;
     }
 
+    /* ORDER TRACKING STEPS IN MY ORDERS */
+    .track-step-wrap {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 14px 0 8px;
+    }
+    .track-step-wrap::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 15px;
+      right: 15px;
+      height: 3px;
+      background: #e2e8e4;
+      z-index: 1;
+    }
+    .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8e4;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: bold;
+      margin: 0 auto 4px auto;
+    }
+    .step-item.active .step-dot {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 0 3px rgba(18, 112, 50, 0.2);
+    }
+    .step-title { font-size: 9px; font-weight: 600; color: var(--muted); }
+    .step-item.active .step-title { color: var(--primary-dark); font-weight: 700; }
+
     /* POPUP OVERLAYS */
     .popup-box {
       display: none;
@@ -352,6 +393,7 @@
     }
     .btn-primary { background: var(--primary); color: white; }
     .btn-primary:active { background: var(--primary-dark); }
+    .btn-purple { background: var(--purple); color: white; }
     .btn-outline { background: white; border: 1px solid var(--border); color: #334155; }
     .btn-danger { background: var(--danger); color: white; }
     #new-address-box {
@@ -362,6 +404,46 @@
       border-radius: 10px;
       margin-bottom: 8px;
     }
+
+    /* MEESHO REFER SCREEN STYLING */
+    .refer-step-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 16px 0;
+      text-align: center;
+      position: relative;
+    }
+    .refer-step-col { flex: 1; padding: 0 4px; }
+    .refer-step-icon {
+      width: 50px;
+      height: 50px;
+      background: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin: 0 auto 6px auto;
+    }
+    .refer-step-label { font-size: 11px; font-weight: 600; color: #475569; line-height: 1.3; }
+    
+    .refer-milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin: 14px 0;
+    }
+    .refer-badge-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 4px;
+      text-align: center;
+      background: #fafafa;
+    }
+    .refer-badge-val { font-size: 15px; font-weight: 800; color: #9333ea; }
+    .refer-badge-sub { font-size: 10px; color: #64748b; margin-top: 2px; }
 
     /* BOTTOM NAV */
     .bottom-nav {
@@ -460,6 +542,15 @@
       </div>
     </div>
 
+    <!-- My Orders (RESTORED WITH FULL LIVE ORDER TRACKING) -->
+    <div class="acc-section-title">My Orders</div>
+    <ul class="acc-menu-list">
+      <li class="acc-menu-item" onclick="openMyOrdersPopup()">
+        <div class="acc-menu-left"><span class="icon">📦</span><span>My Orders & Live Tracking</span></div>
+        <span id="myOrdersCountBadge" style="font-size:12px; color:var(--primary); font-weight:700;">0 Orders ›</span>
+      </li>
+    </ul>
+
     <!-- My Payments -->
     <div class="acc-section-title">My Payments</div>
     <ul class="acc-menu-list">
@@ -528,7 +619,105 @@
     </button>
   </div>
 
-  <!-- POPUP 1: EDIT PROFILE -->
+  <!-- POPUP: MY ORDERS & LIVE TRACKING (RESTORED) -->
+  <div class="popup-box" id="myOrdersModal">
+    <div class="popup-inner" style="max-width:460px;">
+      <button class="popup-close" onclick="hidePopup('myOrdersModal')">✕</button>
+      <h3 style="color:var(--primary); font-size:16px; margin-bottom:12px;">📦 My Orders & Tracking</h3>
+      <div id="myOrdersListContainer" style="max-height:400px; overflow-y:auto;">Loading orders...</div>
+    </div>
+  </div>
+
+  <!-- POPUP: REFER & EARN CASH (MEESHO STYLE SCREEN AS PER SCREENSHOT) -->
+  <div class="popup-box" id="referModal">
+    <div class="popup-inner" style="max-width:460px;">
+      <button class="popup-close" onclick="hidePopup('referModal')">✕</button>
+      
+      <div style="text-align:center; padding-top:4px;">
+        <span style="font-size:12px; color:#9333ea; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Invite New Friends</span>
+        <h2 style="font-size:24px; font-weight:800; color:#1e1b4b; margin:2px 0 10px;">Earn Cash</h2>
+      </div>
+
+      <!-- 3 Steps from Screenshot -->
+      <div class="refer-step-row">
+        <div class="refer-step-col">
+          <div class="refer-step-icon">📱</div>
+          <div class="refer-step-label">Share Product / Invite Link</div>
+        </div>
+        <div style="font-size:18px; color:#cbd5e1; align-self:center;">➜</div>
+        <div class="refer-step-col">
+          <div class="refer-step-icon">📦</div>
+          <div class="refer-step-label">Friends 1st Order Delivered</div>
+        </div>
+        <div style="font-size:18px; color:#cbd5e1; align-self:center;">➜</div>
+        <div class="refer-step-col">
+          <div class="refer-step-icon">💰</div>
+          <div class="refer-step-label">Earn Cash in Wallet</div>
+        </div>
+      </div>
+
+      <!-- Clear Reward Rules Box -->
+      <div style="background:#fdf4ff; border:1px solid #f0abfc; border-radius:12px; padding:12px; margin:12px 0; font-size:12px; line-height:1.6; color:#701a75;">
+        <div style="font-weight:800; font-size:13px; margin-bottom:4px;">🎁 Your Exclusive Referral Earning Rules:</div>
+        <div>✓ <b>₹5.00 Instant Cash</b> har dost ke 1st verified delivery order par.</div>
+        <div>✓ <b>₹5.00 Extra Bonus</b> har ₹1,000 cart value ke order par (e.g. ₹2,000 order = ₹10 bonus).</div>
+      </div>
+
+      <!-- Unlock Milestone Badges -->
+      <div class="refer-milestone-grid">
+        <div class="refer-badge-card">
+          <div class="refer-badge-val">₹5</div>
+          <div class="refer-badge-sub">🔒 1st Invite</div>
+        </div>
+        <div class="refer-badge-card">
+          <div class="refer-badge-val">₹5</div>
+          <div class="refer-badge-sub">🔒 2nd Invite</div>
+        </div>
+        <div class="refer-badge-card">
+          <div class="refer-badge-val">₹5</div>
+          <div class="refer-badge-sub">🔒 3rd Invite</div>
+        </div>
+        <div class="refer-badge-card">
+          <div class="refer-badge-val">₹5</div>
+          <div class="refer-badge-sub">🔒 4th Invite</div>
+        </div>
+      </div>
+
+      <!-- Referral Code Box -->
+      <div style="background:#f8fafc; border:1px dashed #cbd5e1; border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div>
+          <small style="color:var(--muted); font-size:11px;">Your Referral Code:</small>
+          <div style="font-size:16px; font-weight:800; color:var(--primary);" id="myRefCodeTxt">FV2026</div>
+        </div>
+        <button onclick="copyReferCode()" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer;">Copy Code</button>
+      </div>
+
+      <!-- Stats -->
+      <div style="display:flex; justify-content:space-around; background:#f1f5f9; padding:10px; border-radius:10px; margin-bottom:14px; text-align:center;">
+        <div>
+          <div style="font-size:11px; color:#64748b;">Friends Joined</div>
+          <div style="font-size:16px; font-weight:800; color:#1e293b;" id="dispTotalReferred">0</div>
+        </div>
+        <div style="border-left:1px solid #cbd5e1;"></div>
+        <div>
+          <div style="font-size:11px; color:#64748b;">Total Cash Earned</div>
+          <div style="font-size:16px; font-weight:800; color:#16a34a;">₹<span id="dispTotalRefEarnings">0.00</span></div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Big Invite Button (as per screenshot) -->
+      <div style="display:flex; gap:8px;">
+        <button class="btn-block" style="background:#86198f; color:white; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px;" onclick="shareOnWhatsApp()">
+          <span>💬</span> Invite Via Whatsapp
+        </button>
+        <button class="btn-block btn-outline" style="width:60px; display:flex; align-items:center; justify-content:center; font-size:18px;" onclick="shareStoreToWhatsApp()" title="Share Link">
+          🔗
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: EDIT PROFILE -->
   <div class="popup-box" id="profileEditModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('profileEditModal')">✕</button>
@@ -543,7 +732,7 @@
     </div>
   </div>
 
-  <!-- POPUP 2: HELP CENTRE -->
+  <!-- POPUP: HELP CENTRE -->
   <div class="popup-box" id="helpCentreModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('helpCentreModal')">✕</button>
@@ -580,27 +769,7 @@
     </div>
   </div>
 
-  <!-- POPUP 3: REFER & EARN -->
-  <div class="popup-box" id="referModal">
-    <div class="popup-inner" style="text-align:center;">
-      <button class="popup-close" onclick="hidePopup('referModal')">✕</button>
-      <div style="font-size:36px; margin-bottom:6px;">🎁</div>
-      <h3 style="color:var(--primary); font-size:18px;">Refer Friends & Earn Cash</h3>
-      <p style="font-size:12px; color:var(--muted); margin:6px 0 14px;">Invite your neighbours in Gossaigaon! Get <b>₹5 bonus</b> on their first vegetable delivery order.</p>
-      
-      <div style="background:#f1f5f9; border:1px dashed #94a3b8; border-radius:12px; padding:12px; margin-bottom:12px;">
-        <div style="font-size:11px; color:#64748b; text-transform:uppercase;">Your Referral Code</div>
-        <div style="font-size:22px; font-weight:800; color:var(--primary-dark); letter-spacing:2px; margin:4px 0;" id="myRefCodeTxt">FV2026</div>
-      </div>
-
-      <div style="display:flex; gap:8px; margin-bottom:8px;">
-        <button class="btn-block btn-primary" onclick="copyReferCode()">📋 Copy Code</button>
-        <button class="btn-block" style="background:#25d366; color:white;" onclick="shareOnWhatsApp()">💬 WhatsApp</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP 4: BANK & UPI DETAILS -->
+  <!-- POPUP: BANK & UPI DETAILS -->
   <div class="popup-box" id="bankModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('bankModal')">✕</button>
@@ -623,7 +792,7 @@
     </div>
   </div>
 
-  <!-- POPUP 5: PAYMENT & REFUND POLICY -->
+  <!-- POPUP: PAYMENT & REFUND POLICY -->
   <div class="popup-box" id="paymentRefundModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('paymentRefundModal')">✕</button>
@@ -637,7 +806,7 @@
     </div>
   </div>
 
-  <!-- POPUP 6: CHANGE LANGUAGE -->
+  <!-- POPUP: CHANGE LANGUAGE -->
   <div class="popup-box" id="languageModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('languageModal')">✕</button>
@@ -664,7 +833,7 @@
     </div>
   </div>
 
-  <!-- POPUP 7: WISHLISTED PRODUCTS -->
+  <!-- POPUP: WISHLISTED PRODUCTS -->
   <div class="popup-box" id="wishlistModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('wishlistModal')">✕</button>
@@ -673,7 +842,7 @@
     </div>
   </div>
 
-  <!-- POPUP 8: SHARED PRODUCTS -->
+  <!-- POPUP: SHARED PRODUCTS -->
   <div class="popup-box" id="sharedProductsModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('sharedProductsModal')">✕</button>
@@ -688,7 +857,7 @@
     </div>
   </div>
 
-  <!-- POPUP 9: FOLLOWED SHOPS -->
+  <!-- POPUP: FOLLOWED SHOPS -->
   <div class="popup-box" id="followedShopsModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('followedShopsModal')">✕</button>
@@ -699,12 +868,12 @@
           <span style="font-size:12px; color:var(--muted);">Gossaigaon Daily Mandi • ⭐ 4.9</span><br>
           <span style="font-size:11px; color:#16a34a; font-weight:700;">● Delivering Live Orders</span>
         </div>
-        <button id="btnFollowToggle" class="btn-action btn-update" style="padding:6px 12px; border-radius:8px; font-size:12px;" onclick="toggleFollowShop()">Following ✓</button>
+        <button id="btnFollowToggle" class="btn-action btn-update" style="padding:6px 12px; border-radius:8px; font-size:12px; background:var(--primary); color:white; border:none;" onclick="toggleFollowShop()">Following ✓</button>
       </div>
     </div>
   </div>
 
-  <!-- POPUP 10: SETTINGS -->
+  <!-- POPUP: SETTINGS -->
   <div class="popup-box" id="settingsModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('settingsModal')">✕</button>
@@ -733,7 +902,7 @@
     </div>
   </div>
 
-  <!-- POPUP 11: LEGAL & POLICIES -->
+  <!-- POPUP: LEGAL & POLICIES -->
   <div class="popup-box" id="legalPolicyModal">
     <div class="popup-inner">
       <button class="popup-close" onclick="hidePopup('legalPolicyModal')">✕</button>
@@ -747,7 +916,7 @@
     </div>
   </div>
 
-  <!-- POPUP 12: LOGOUT -->
+  <!-- POPUP: LOGOUT -->
   <div class="popup-box" id="logoutModal">
     <div class="popup-inner" style="text-align:center;">
       <button class="popup-close" onclick="hidePopup('logoutModal')">✕</button>
@@ -802,6 +971,9 @@
           </select>
           <input type="text" id="cAddress" placeholder="Exact house, landmark, or street">
         </div>
+
+        <!-- Optional Referral Code during checkout -->
+        <input type="text" id="cRefCodeInput" placeholder="Referral Code (Optional - e.g. FV2026)">
 
         <div style="margin: 8px 0 10px 0;">
           <label style="font-size: 12px; font-weight: 700;">Payment Mode</label>
@@ -962,16 +1134,94 @@
       var name = localStorage.getItem('cust_saved_name') || 'My Account';
       var phone = localStorage.getItem('cust_saved_phone') || 'Tap to add your details';
       var wishlist = JSON.parse(localStorage.getItem('cust_wishlist') || '[]');
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
 
       document.getElementById('dispProfileName').innerText = name;
       document.getElementById('dispProfilePhone').innerText = phone;
       document.getElementById('wishCountLabel').innerText = wishlist.length + " items ›";
       document.getElementById('accCartCount').innerText = cartItems.reduce(function(s, i) { return s + i.qty; }, 0);
+      document.getElementById('myOrdersCountBadge').innerText = orders.length + " Orders ›";
+
+      // Refer Stats
+      var refHist = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
+      var totalEarnings = refHist.reduce(function(s, i) { return s + (Number(i.bonus) || 0); }, 0);
+      document.getElementById('dispTotalReferred').innerText = refHist.length;
+      document.getElementById('dispTotalRefEarnings').innerText = totalEarnings.toFixed(2);
     }
 
-    /* --- ALL 12 WORKING POPUP FUNCTIONS --- */
+    /* --- 1. MY ORDERS POPUP (RESTORED WITH LIVE TRACKING) --- */
+    function openMyOrdersPopup() {
+      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var container = document.getElementById('myOrdersListContainer');
 
-    // 1. Profile Edit
+      if (!orders.length) {
+        container.innerHTML = "<p style='text-align:center; color:var(--muted); padding:30px 10px;'>No orders placed yet.<br>Go to shop and order fresh vegetables!</p>";
+      } else {
+        var html = "";
+        orders.slice().reverse().forEach(function(ord, revIdx) {
+          var originalIdx = orders.length - 1 - revIdx;
+          var st = ord.status || ord.orderStatus || "Placed";
+
+          // Step Index: Received(1) -> Accepted(2) -> Dispatch(3) -> Delivered(4)
+          var step = 1;
+          if (st === "Accepted") step = 2;
+          if (st === "Packed" || st === "Out for Delivery") step = 3;
+          if (st === "Delivered") step = 4;
+
+          var itemsList = "";
+          if (Array.isArray(ord.items)) {
+            itemsList = ord.items.map(function(i) {
+              if (typeof i === 'string') return i;
+              return (i.name || 'Item') + ' × ' + (i.qty || 1);
+            }).join(', ');
+          } else {
+            itemsList = "Daily Vegetable Pack";
+          }
+
+          html += '<div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; border-bottom:1px dashed #e2e8f0; padding-bottom:6px; margin-bottom:6px;">' +
+                      '<span style="color:var(--primary);">' + ord.orderId + '</span>' +
+                      '<span style="font-size:11px; padding:3px 8px; border-radius:6px; background:#e8f5ed; color:var(--primary);">' + st + '</span>' +
+                    '</div>' +
+                    '<div style="font-size:12px; color:#334155; margin-bottom:4px;"><b>Items:</b> ' + itemsList + '</div>' +
+                    '<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;">' +
+                      '<span>Address: ' + (ord.village || 'Gossaigaon') + '</span>' +
+                      '<b>Total: ₹' + ord.total + ' (' + (ord.payment || 'COD') + ')</b>' +
+                    '</div>';
+
+          if (st !== "Cancelled") {
+            html += '<div class="track-step-wrap">' +
+                      '<div class="step-item ' + (step >= 1 ? 'active' : '') + '"><div class="step-dot">1</div><div class="step-title">Received</div></div>' +
+                      '<div class="step-item ' + (step >= 2 ? 'active' : '') + '"><div class="step-dot">2</div><div class="step-title">Accepted</div></div>' +
+                      '<div class="step-item ' + (step >= 3 ? 'active' : '') + '"><div class="step-dot">3</div><div class="step-title">Dispatch</div></div>' +
+                      '<div class="step-item ' + (step >= 4 ? 'active' : '') + '"><div class="step-dot">4</div><div class="step-title">Delivered</div></div>' +
+                    '</div>';
+          } else {
+            html += '<div style="color:var(--danger); font-size:11px; font-weight:700; margin-top:4px;">Order was cancelled.</div>';
+          }
+
+          html += '</div>';
+        });
+        container.innerHTML = html;
+      }
+      showPopup('myOrdersModal');
+    }
+
+    /* --- 2. REFER & EARN POPUP --- */
+    function openReferPopup() {
+      updateProfileLabels();
+      showPopup('referModal');
+    }
+    function copyReferCode() {
+      navigator.clipboard.writeText("FV2026");
+      alert("✓ Referral code 'FV2026' copied to clipboard!");
+    }
+    function shareOnWhatsApp() {
+      var text = encodeURIComponent("Namaste! Join me on Fresh Veggie Store Gossaigaon. Use my invite code *FV2026* to get instant discounts on fresh vegetables & grocery delivery! https://fresh-lang.github.io/Fresh-vegetables-main/");
+      window.open("https://wa.me/?text=" + text, "_blank");
+    }
+
+    /* --- 3. PROFILE POPUP --- */
     function openProfilePopup() {
       document.getElementById('profNameInput').value = localStorage.getItem('cust_saved_name') || '';
       document.getElementById('profPhoneInput').value = localStorage.getItem('cust_saved_phone') || '';
@@ -995,7 +1245,7 @@
       alert("✓ Profile details saved successfully!");
     }
 
-    // 2. Help Centre
+    /* --- 4. HELP CENTRE --- */
     function openHelpCentrePopup() {
       showPopup('helpCentreModal');
     }
@@ -1005,20 +1255,7 @@
       hidePopup('helpCentreModal');
     }
 
-    // 3. Refer & Earn
-    function openReferPopup() {
-      showPopup('referModal');
-    }
-    function copyReferCode() {
-      navigator.clipboard.writeText("FV2026");
-      alert("✓ Referral code 'FV2026' copied!");
-    }
-    function shareOnWhatsApp() {
-      var text = encodeURIComponent("Order farm fresh vegetables & daily groceries in Gossaigaon using my code FV2026! Fresh Veggie Store: https://fresh-lang.github.io/Fresh-vegetables-main/");
-      window.open("https://wa.me/?text=" + text, "_blank");
-    }
-
-    // 4. Bank & UPI Details
+    /* --- 5. BANK & UPI DETAILS --- */
     function openBankDetailsPopup() {
       document.getElementById('custUpiInput').value = localStorage.getItem('cust_saved_upi') || '';
       document.getElementById('custAccName').value = localStorage.getItem('cust_saved_acc_name') || '';
@@ -1037,12 +1274,12 @@
       alert("✓ Bank & UPI refund details saved!");
     }
 
-    // 5. Payment & Refund Policy
+    /* --- 6. PAYMENT & REFUND POLICY --- */
     function openPaymentRefundPopup() {
       showPopup('paymentRefundModal');
     }
 
-    // 6. Change Language
+    /* --- 7. CHANGE LANGUAGE --- */
     function openLanguagePopup() {
       showPopup('languageModal');
     }
@@ -1054,7 +1291,7 @@
       alert("Language changed to: " + sel);
     }
 
-    // 7. Wishlisted Products
+    /* --- 8. WISHLISTED PRODUCTS --- */
     function openWishlistPopup() {
       var wishlist = JSON.parse(localStorage.getItem('cust_wishlist') || '[]');
       var container = document.getElementById('wishlistItemsContainer');
@@ -1078,7 +1315,7 @@
       showPopup('wishlistModal');
     }
 
-    // 8. Shared Products
+    /* --- 9. SHARED PRODUCTS --- */
     function openSharedProductsPopup() {
       showPopup('sharedProductsModal');
     }
@@ -1087,7 +1324,7 @@
       window.open("https://wa.me/?text=" + text, "_blank");
     }
 
-    // 9. Followed Shops
+    /* --- 10. FOLLOWED SHOPS --- */
     function openFollowedShopsPopup() {
       showPopup('followedShopsModal');
     }
@@ -1099,12 +1336,12 @@
         btn.style.color = "#333";
       } else {
         btn.innerText = "Following ✓";
-        btn.style.background = "var(--green)";
+        btn.style.background = "var(--primary)";
         btn.style.color = "white";
       }
     }
 
-    // 10. Settings
+    /* --- 11. SETTINGS --- */
     function openSettingsPopup() {
       showPopup('settingsModal');
     }
@@ -1116,12 +1353,12 @@
       }
     }
 
-    // 11. Legal & Policies
+    /* --- 12. LEGAL & POLICIES --- */
     function openLegalPolicyPopup() {
       showPopup('legalPolicyModal');
     }
 
-    // 12. Logout
+    /* --- 13. LOGOUT --- */
     function openLogoutPopup() {
       showPopup('logoutModal');
     }
@@ -1284,6 +1521,7 @@
       var name = document.getElementById('cName').value.trim();
       var phone = document.getElementById('cPhone').value.trim();
       var payType = document.querySelector('input[name="payType"]:checked').value;
+      var refCodeUsed = (document.getElementById('cRefCodeInput').value || '').trim();
       var dropdown = document.getElementById('savedAddressDropdown');
       
       var village = "", address = "";
@@ -1325,6 +1563,22 @@
 
       localStorage.setItem('cust_saved_name', name);
       localStorage.setItem('cust_saved_phone', phone);
+
+      // Referral Reward Calculation logic:
+      // ₹5 on 1st order + ₹5 bonus per ₹1,000 cart total
+      if (refCodeUsed) {
+        var refHist = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
+        var orderBonus = 5 + (Math.floor(totals.total / 1000) * 5);
+        refHist.push({
+          friend: name,
+          phone: phone,
+          bonus: orderBonus,
+          code: refCodeUsed,
+          date: new Date().toISOString()
+        });
+        localStorage.setItem('fv_referral_history', JSON.stringify(refHist));
+      }
+
       updateProfileLabels();
 
       var orderId = "FV-" + Math.floor(10000 + Math.random() * 90000);
@@ -1363,6 +1617,7 @@
       updateCartBadge();
       hidePopup('cartPopup');
       loadSavedAddressesDropdown();
+      updateProfileLabels();
     }
 
     // Startup
