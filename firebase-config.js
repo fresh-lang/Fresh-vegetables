@@ -1,4 +1,6 @@
 // Firebase & Store Configuration
+// Fill your Firebase Console credentials here:
+
 export const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "fresh-vegetables-xxxxx.firebaseapp.com",
@@ -9,6 +11,9 @@ export const firebaseConfig = {
 };
 
 export const CONFIG = {
-  upiId: "yourupi@bank",
+  // 1. Apna UPI ID dalein (GPay / PhonePe / Paytm):
+  upiId: "8134834380@mbk",
+
+  // 2. Firebase Console -> Authentication -> Users me se apna Admin UID dalein:
   adminUid: "PASTE_YOUR_FIREBASE_ADMIN_UID_HERE"
 };
