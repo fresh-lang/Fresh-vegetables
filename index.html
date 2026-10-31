@@ -20,8 +20,7 @@
       --border: #e3ece6;
       --radius: 14px;
       --danger: #dc2626;
-      --purple: #9333ea;
-      --purple-light: #f3e8ff;
+      --purple: #86198f;
       --shadow: 0 4px 20px -2px rgba(18, 112, 50, 0.08);
       --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.12);
     }
@@ -90,6 +89,31 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+    }
+
+    /* WALLET BANNER CARD */
+    .wallet-card {
+      background: linear-gradient(135deg, #127032 0%, #08401b 100%);
+      color: white;
+      padding: 16px 18px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(18, 112, 50, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wallet-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.85; font-weight: 600; }
+    .wallet-val { font-size: 24px; font-weight: 800; margin-top: 2px; }
+    .btn-wallet-add {
+      background: #ffffff;
+      color: var(--primary-dark);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
 
     /* SEARCH & CATEGORIES */
@@ -234,17 +258,6 @@
       justify-content: center;
       font-size: 26px;
       border: 1px solid #fed7d7;
-      position: relative;
-    }
-    .acc-avatar-cam {
-      position: absolute;
-      bottom: -2px;
-      right: -2px;
-      background: white;
-      border-radius: 50%;
-      font-size: 10px;
-      padding: 2px 3px;
-      border: 1px solid #ccc;
     }
     .acc-two-cards {
       display: grid;
@@ -294,7 +307,7 @@
       font-weight: 700;
     }
 
-    /* ORDER TRACKING STEPS IN MY ORDERS */
+    /* ORDER TRACKING STEPS */
     .track-step-wrap {
       display: flex;
       justify-content: space-between;
@@ -393,7 +406,6 @@
     }
     .btn-primary { background: var(--primary); color: white; }
     .btn-primary:active { background: var(--primary-dark); }
-    .btn-purple { background: var(--purple); color: white; }
     .btn-outline { background: white; border: 1px solid var(--border); color: #334155; }
     .btn-danger { background: var(--danger); color: white; }
     #new-address-box {
@@ -405,14 +417,13 @@
       margin-bottom: 8px;
     }
 
-    /* MEESHO REFER SCREEN STYLING */
+    /* MEESHO REFER SCREEN */
     .refer-step-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin: 16px 0;
       text-align: center;
-      position: relative;
     }
     .refer-step-col { flex: 1; padding: 0 4px; }
     .refer-step-icon {
@@ -428,7 +439,6 @@
       margin: 0 auto 6px auto;
     }
     .refer-step-label { font-size: 11px; font-weight: 600; color: #475569; line-height: 1.3; }
-    
     .refer-milestone-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -442,7 +452,7 @@
       text-align: center;
       background: #fafafa;
     }
-    .refer-badge-val { font-size: 15px; font-weight: 800; color: #9333ea; }
+    .refer-badge-val { font-size: 15px; font-weight: 800; color: #86198f; }
     .refer-badge-sub { font-size: 10px; color: #64748b; margin-top: 2px; }
 
     /* BOTTOM NAV */
@@ -485,14 +495,27 @@
       <div class="brand-text">Fresh Veggie</div>
     </div>
     <div class="header-actions">
+      <button class="btn-header" onclick="openWalletPopup()">
+        <span>💰 ₹<span id="headerWalletBal">0.00</span></span>
+      </button>
       <button class="btn-header" onclick="showCartPopup()">
-        <span>🛒 Cart (<span id="cartCount">0</span>)</span>
+        <span>🛒 (<span id="cartCount">0</span>)</span>
       </button>
     </div>
   </header>
 
   <!-- TAB 1: SHOPPING STORE -->
   <div class="main-wrap" id="shopView">
+    
+    <!-- WALLET BANNER -->
+    <div class="wallet-card">
+      <div>
+        <div class="wallet-lbl">Wallet Balance</div>
+        <div class="wallet-val">₹<span id="shopWalletBal">0.00</span></div>
+      </div>
+      <button class="btn-wallet-add" onclick="openWalletPopup()">+ Add Cash</button>
+    </div>
+
     <div class="search-box">
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="Search fresh vegetables, oil, rice..." oninput="doSearch()">
@@ -516,15 +539,12 @@
     </div>
 
     <!-- User Profile Header Strip -->
-    <div class="acc-user-strip" onclick="openProfilePopup()">
+    <div class="acc-user-strip" onclick="handleProfileStripClick()">
       <div style="display:flex; align-items:center; gap:12px;">
-        <div class="acc-avatar">
-          👤
-          <span class="acc-avatar-cam">📷</span>
-        </div>
+        <div class="acc-avatar">👤</div>
         <div>
-          <div style="font-size:16px; font-weight:800; color:#0f172a;" id="dispProfileName">My Account</div>
-          <div style="font-size:12px; color:var(--muted);" id="dispProfilePhone">Tap to add your details</div>
+          <div style="font-size:16px; font-weight:800; color:#0f172a;" id="dispProfileName">Login / Register</div>
+          <div style="font-size:12px; color:var(--muted);" id="dispProfilePhone">Tap to access your account</div>
         </div>
       </div>
       <div style="font-size:18px; color:#94a3b8;">›</div>
@@ -542,7 +562,16 @@
       </div>
     </div>
 
-    <!-- My Orders (RESTORED WITH FULL LIVE ORDER TRACKING) -->
+    <!-- My Wallet Option -->
+    <div class="acc-section-title">My Wallet</div>
+    <ul class="acc-menu-list">
+      <li class="acc-menu-item" onclick="openWalletPopup()">
+        <div class="acc-menu-left"><span class="icon">💰</span><span>Fresh Veggie Wallet</span></div>
+        <span style="font-size:13px; color:var(--primary); font-weight:800;">₹<span id="accWalletBal">0.00</span> ›</span>
+      </li>
+    </ul>
+
+    <!-- My Orders (FILTERED STRICTLY BY LOGGED-IN CUSTOMER PHONE) -->
     <div class="acc-section-title">My Orders</div>
     <ul class="acc-menu-list">
       <li class="acc-menu-item" onclick="openMyOrdersPopup()">
@@ -597,7 +626,7 @@
         <span>›</span>
       </li>
       <li class="acc-menu-item" onclick="openLogoutPopup()">
-        <div class="acc-menu-left"><span class="icon">🚪</span><span style="color:var(--danger);">Logout</span></div>
+        <div class="acc-menu-left"><span class="icon">🚪</span><span style="color:var(--danger);" id="logoutBtnText">Logout</span></div>
         <span>›</span>
       </li>
     </ul>
@@ -619,26 +648,115 @@
     </button>
   </div>
 
-  <!-- POPUP: MY ORDERS & LIVE TRACKING (RESTORED) -->
-  <div class="popup-box" id="myOrdersModal">
-    <div class="popup-inner" style="max-width:460px;">
-      <button class="popup-close" onclick="hidePopup('myOrdersModal')">✕</button>
-      <h3 style="color:var(--primary); font-size:16px; margin-bottom:12px;">📦 My Orders & Tracking</h3>
-      <div id="myOrdersListContainer" style="max-height:400px; overflow-y:auto;">Loading orders...</div>
+  <!-- POPUP: WALLET & ADD MONEY -->
+  <div class="popup-box" id="walletModal">
+    <div class="popup-inner" style="max-width:380px;">
+      <button class="popup-close" onclick="hidePopup('walletModal')">✕</button>
+      <h3 style="color:var(--primary); font-size:16px; margin-bottom:4px;">💰 Fresh Veggie Wallet</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">Instant checkout & cash balance</p>
+
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:12px; text-align:center; margin-bottom:12px;">
+        <div style="font-size:11px; color:#166534; text-transform:uppercase; font-weight:700;">Available Balance</div>
+        <div style="font-size:26px; font-weight:800; color:var(--primary);">₹<span id="modalWalletBal">0.00</span></div>
+      </div>
+
+      <label style="font-size:12px; font-weight:700;">Select / Enter Amount to Add:</label>
+      <div style="display:flex; gap:6px; margin-bottom:8px;">
+        <button type="button" class="cat-pill" style="flex:1;" onclick="setAddAmount(50)">+₹50</button>
+        <button type="button" class="cat-pill" style="flex:1;" onclick="setAddAmount(100)">+₹100</button>
+        <button type="button" class="cat-pill" style="flex:1;" onclick="setAddAmount(200)">+₹200</button>
+      </div>
+
+      <input type="number" id="addMoneyInput" placeholder="Enter amount (min ₹10)" min="10" oninput="genWalletQr()">
+
+      <div id="walletQrSection" style="display:none; text-align:center; background:#fff; padding:12px; border:1px dashed var(--primary); border-radius:12px; margin-bottom:12px;">
+        <p style="font-size:11px; color:var(--muted); margin-bottom:6px;">Scan & Pay via GPay / PhonePe / Paytm:</p>
+        <img id="walletQrImg" src="" alt="UPI QR" style="width:140px; height:140px; border-radius:8px; margin:0 auto; display:block;">
+        <p style="font-size:11px; color:#14532d; font-weight:700; margin-top:6px;">UPI: 8134834380@mbk</p>
+      </div>
+
+      <button class="btn-block btn-primary" onclick="confirmAddMoney()">Confirm Money Added</button>
     </div>
   </div>
 
-  <!-- POPUP: REFER & EARN CASH (MEESHO STYLE SCREEN AS PER SCREENSHOT) -->
+  <!-- POPUP: USER LOGIN & REGISTRATION -->
+  <div class="popup-box" id="authModal">
+    <div class="popup-inner" style="max-width:380px;">
+      <button class="popup-close" onclick="hidePopup('authModal')">✕</button>
+
+      <!-- LOGIN BOX -->
+      <div id="authLoginBox">
+        <h3 style="color:var(--primary); font-size:18px; margin-bottom:4px;">Welcome Back!</h3>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Log in with your Mobile Number & Password</p>
+
+        <label style="font-size:12px; font-weight:700;">Mobile Number:</label>
+        <input type="tel" id="loginPhoneInput" placeholder="10-digit number" maxlength="10">
+
+        <label style="font-size:12px; font-weight:700;">Password:</label>
+        <input type="password" id="loginPassInput" placeholder="••••••••">
+
+        <button class="btn-block btn-primary" style="margin-top:6px;" onclick="handleUserLogin()">Login to Account</button>
+        <p style="text-align:center; font-size:12px; color:var(--muted); margin-top:12px;">
+          New user? <b style="color:var(--primary); cursor:pointer;" onclick="toggleAuthForms('register')">Register here</b>
+        </p>
+      </div>
+
+      <!-- REGISTRATION BOX -->
+      <div id="authRegisterBox" style="display:none;">
+        <h3 style="color:var(--primary); font-size:18px; margin-bottom:4px;">Create Account</h3>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">1 Mobile Number = 1 Unique Account ID</p>
+
+        <label style="font-size:12px; font-weight:700;">Full Name:</label>
+        <input type="text" id="regNameInput" placeholder="Enter full name">
+
+        <label style="font-size:12px; font-weight:700;">Mobile Number (Unique ID):</label>
+        <input type="tel" id="regPhoneInput" placeholder="10-digit number" maxlength="10">
+
+        <label style="font-size:12px; font-weight:700;">Create Password:</label>
+        <input type="password" id="regPassInput" placeholder="Min 4 characters">
+
+        <button class="btn-block btn-primary" style="margin-top:6px;" onclick="handleUserRegister()">Create Account & Sign In</button>
+        <p style="text-align:center; font-size:12px; color:var(--muted); margin-top:12px;">
+          Already have an account? <b style="color:var(--primary); cursor:pointer;" onclick="toggleAuthForms('login')">Login here</b>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP: EDIT PROFILE -->
+  <div class="popup-box" id="profileEditModal">
+    <div class="popup-inner" style="max-width:380px;">
+      <button class="popup-close" onclick="hidePopup('profileEditModal')">✕</button>
+      <h3 style="color:var(--primary); font-size:16px; margin-bottom:12px;">👤 Update Profile Details</h3>
+      <label style="font-size:12px; font-weight:700;">Your Name:</label>
+      <input type="text" id="profNameInput">
+      <label style="font-size:12px; font-weight:700;">Mobile Number (Account ID):</label>
+      <input type="tel" id="profPhoneInput" readonly style="background:#f1f5f9; color:#64748b;">
+      <label style="font-size:12px; font-weight:700;">Village / Town Area:</label>
+      <input type="text" id="profAreaInput" placeholder="e.g. Gossaigaon, Oxiguri">
+      <button class="btn-block btn-primary" onclick="saveProfileDetails()">Update Profile</button>
+    </div>
+  </div>
+
+  <!-- POPUP: MY ORDERS & LIVE TRACKING (PHONE FILTERED) -->
+  <div class="popup-box" id="myOrdersModal">
+    <div class="popup-inner" style="max-width:460px;">
+      <button class="popup-close" onclick="hidePopup('myOrdersModal')">✕</button>
+      <h3 style="color:var(--primary); font-size:16px; margin-bottom:12px;">📦 My Orders & Live Tracking</h3>
+      <div id="myOrdersListContainer" style="max-height:400px; overflow-y:auto;"></div>
+    </div>
+  </div>
+
+  <!-- POPUP: REFER & EARN CASH -->
   <div class="popup-box" id="referModal">
     <div class="popup-inner" style="max-width:460px;">
       <button class="popup-close" onclick="hidePopup('referModal')">✕</button>
       
       <div style="text-align:center; padding-top:4px;">
-        <span style="font-size:12px; color:#9333ea; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Invite New Friends</span>
+        <span style="font-size:12px; color:#86198f; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Invite New Friends</span>
         <h2 style="font-size:24px; font-weight:800; color:#1e1b4b; margin:2px 0 10px;">Earn Cash</h2>
       </div>
 
-      <!-- 3 Steps from Screenshot -->
       <div class="refer-step-row">
         <div class="refer-step-col">
           <div class="refer-step-icon">📱</div>
@@ -656,34 +774,19 @@
         </div>
       </div>
 
-      <!-- Clear Reward Rules Box -->
       <div style="background:#fdf4ff; border:1px solid #f0abfc; border-radius:12px; padding:12px; margin:12px 0; font-size:12px; line-height:1.6; color:#701a75;">
         <div style="font-weight:800; font-size:13px; margin-bottom:4px;">🎁 Your Exclusive Referral Earning Rules:</div>
         <div>✓ <b>₹5.00 Instant Cash</b> har dost ke 1st verified delivery order par.</div>
         <div>✓ <b>₹5.00 Extra Bonus</b> har ₹1,000 cart value ke order par (e.g. ₹2,000 order = ₹10 bonus).</div>
       </div>
 
-      <!-- Unlock Milestone Badges -->
       <div class="refer-milestone-grid">
-        <div class="refer-badge-card">
-          <div class="refer-badge-val">₹5</div>
-          <div class="refer-badge-sub">🔒 1st Invite</div>
-        </div>
-        <div class="refer-badge-card">
-          <div class="refer-badge-val">₹5</div>
-          <div class="refer-badge-sub">🔒 2nd Invite</div>
-        </div>
-        <div class="refer-badge-card">
-          <div class="refer-badge-val">₹5</div>
-          <div class="refer-badge-sub">🔒 3rd Invite</div>
-        </div>
-        <div class="refer-badge-card">
-          <div class="refer-badge-val">₹5</div>
-          <div class="refer-badge-sub">🔒 4th Invite</div>
-        </div>
+        <div class="refer-badge-card"><div class="refer-badge-val">₹5</div><div class="refer-badge-sub">🔒 1st Invite</div></div>
+        <div class="refer-badge-card"><div class="refer-badge-val">₹5</div><div class="refer-badge-sub">🔒 2nd Invite</div></div>
+        <div class="refer-badge-card"><div class="refer-badge-val">₹5</div><div class="refer-badge-sub">🔒 3rd Invite</div></div>
+        <div class="refer-badge-card"><div class="refer-badge-val">₹5</div><div class="refer-badge-sub">🔒 4th Invite</div></div>
       </div>
 
-      <!-- Referral Code Box -->
       <div style="background:#f8fafc; border:1px dashed #cbd5e1; border-radius:12px; padding:10px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <div>
           <small style="color:var(--muted); font-size:11px;">Your Referral Code:</small>
@@ -692,7 +795,6 @@
         <button onclick="copyReferCode()" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer;">Copy Code</button>
       </div>
 
-      <!-- Stats -->
       <div style="display:flex; justify-content:space-around; background:#f1f5f9; padding:10px; border-radius:10px; margin-bottom:14px; text-align:center;">
         <div>
           <div style="font-size:11px; color:#64748b;">Friends Joined</div>
@@ -705,7 +807,6 @@
         </div>
       </div>
 
-      <!-- WhatsApp Big Invite Button (as per screenshot) -->
       <div style="display:flex; gap:8px;">
         <button class="btn-block" style="background:#86198f; color:white; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px;" onclick="shareOnWhatsApp()">
           <span>💬</span> Invite Via Whatsapp
@@ -714,21 +815,6 @@
           🔗
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- POPUP: EDIT PROFILE -->
-  <div class="popup-box" id="profileEditModal">
-    <div class="popup-inner">
-      <button class="popup-close" onclick="hidePopup('profileEditModal')">✕</button>
-      <h3 style="color:var(--primary); font-size:16px; margin-bottom:12px;">👤 Customer Profile</h3>
-      <label style="font-size:12px; font-weight:700;">Your Name:</label>
-      <input type="text" id="profNameInput" placeholder="e.g. Rahul Das">
-      <label style="font-size:12px; font-weight:700;">Mobile Number:</label>
-      <input type="tel" id="profPhoneInput" placeholder="10-digit number" maxlength="10">
-      <label style="font-size:12px; font-weight:700;">Village / Town Area:</label>
-      <input type="text" id="profAreaInput" placeholder="e.g. Gossaigaon Town, Oxiguri">
-      <button class="btn-block btn-primary" onclick="saveProfileDetails()">Save Profile</button>
     </div>
   </div>
 
@@ -798,9 +884,8 @@
       <button class="popup-close" onclick="hidePopup('paymentRefundModal')">✕</button>
       <h3 style="color:var(--primary); font-size:16px; margin-bottom:8px;">💳 Payment & Refund Policy</h3>
       <div style="font-size:13px; color:#334155; line-height:1.6;">
-        <p><b>1. Payment Modes Supported:</b><br>• Cash on Delivery (COD) at your doorstep.<br>• Dynamic Scan UPI QR with instant 12-digit UTR confirmation.</p>
-        <p style="margin-top:10px;"><b>2. 100% Quality Assurance & Refund:</b><br>Fresh Veggie ensures locally harvested farm-fresh produce. If any item is damaged or substandard upon arrival, report it via WhatsApp (+91 8134834380) within 24 hours for instant UPI refund or replacement on your next order.</p>
-        <p style="margin-top:10px;"><b>3. Refund Timeline:</b><br>Refunds are initiated directly to your registered UPI handle within 2 hours of verification.</p>
+        <p><b>1. Payment Modes Supported:</b><br>• Fresh Veggie Wallet (Instant checkout).<br>• Cash on Delivery (COD) at your doorstep.<br>• Dynamic Scan UPI QR with instant 12-digit UTR confirmation.</p>
+        <p style="margin-top:10px;"><b>2. 100% Quality Assurance & Refund:</b><br>Fresh Veggie ensures locally harvested farm-fresh produce. If any item is damaged or substandard upon arrival, report it via WhatsApp (+91 8134834380) within 24 hours for instant wallet refund or replacement.</p>
       </div>
       <button class="btn-block btn-primary" style="margin-top:14px;" onclick="hidePopup('paymentRefundModal')">Got it</button>
     </div>
@@ -910,7 +995,6 @@
       <div style="font-size:12px; color:#334155; line-height:1.6; max-height:280px; overflow-y:auto;">
         <p><b>1. Fair Weight Guarantee:</b><br>All vegetables and grocery items are weighed with digital precision before packaging.</p>
         <p style="margin-top:8px;"><b>2. Local Delivery Limits:</b><br>Delivery services are dedicated to Gossaigaon Town, Habrubil, Padmabil, Oxiguri, Sapkata, Kachugaon, and nearby Assam zones. Min order is ₹100.</p>
-        <p style="margin-top:8px;"><b>3. Privacy Commitment:</b><br>Customer mobile numbers and delivery coordinates are confidential and used exclusively for delivery fulfillment.</p>
       </div>
       <button class="btn-block btn-primary" style="margin-top:14px;" onclick="hidePopup('legalPolicyModal')">Close</button>
     </div>
@@ -922,7 +1006,7 @@
       <button class="popup-close" onclick="hidePopup('logoutModal')">✕</button>
       <div style="font-size:36px; margin-bottom:8px;">🚪</div>
       <h3 style="font-size:16px; margin-bottom:6px;">Logout from Fresh Veggie?</h3>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">This will reset your current session and clear stored address details from this browser.</p>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">This will end your current account session on this device.</p>
       <div style="display:flex; gap:8px;">
         <button class="btn-block btn-outline" onclick="hidePopup('logoutModal')">Cancel</button>
         <button class="btn-block btn-danger" onclick="confirmLogout()">Yes, Logout</button>
@@ -972,14 +1056,16 @@
           <input type="text" id="cAddress" placeholder="Exact house, landmark, or street">
         </div>
 
-        <!-- Optional Referral Code during checkout -->
         <input type="text" id="cRefCodeInput" placeholder="Referral Code (Optional - e.g. FV2026)">
 
         <div style="margin: 8px 0 10px 0;">
           <label style="font-size: 12px; font-weight: 700;">Payment Mode</label>
           <div style="display: flex; gap: 8px; margin-top: 6px;">
             <label style="flex:1; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
-              <input type="radio" name="payType" value="COD" checked onchange="updatePayView()"> COD
+              <input type="radio" name="payType" value="WALLET" checked onchange="updatePayView()"> 💰 Wallet
+            </label>
+            <label style="flex:1; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
+              <input type="radio" name="payType" value="COD" onchange="updatePayView()"> COD
             </label>
             <label style="flex:1; border:1px solid var(--border); padding:8px; border-radius:8px; font-size:12px; display:flex; align-items:center; gap:4px; cursor:pointer;">
               <input type="radio" name="payType" value="UPI" onchange="updatePayView()"> UPI QR
@@ -1104,7 +1190,7 @@
     function showPopup(id) { document.getElementById(id).style.display = "flex"; }
     function hidePopup(id) { document.getElementById(id).style.display = "none"; }
 
-    /* SWITCH SCREEN (SHOP vs ACCOUNT) */
+    /* SCREEN SWITCHER (Shop vs Account) */
     function switchScreen(screen) {
       var shop = document.getElementById('shopView');
       var header = document.getElementById('mainHeader');
@@ -1130,81 +1216,300 @@
       window.scrollTo(0, 0);
     }
 
-    function updateProfileLabels() {
-      var name = localStorage.getItem('cust_saved_name') || 'My Account';
-      var phone = localStorage.getItem('cust_saved_phone') || 'Tap to add your details';
-      var wishlist = JSON.parse(localStorage.getItem('cust_wishlist') || '[]');
-      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+    /* --- AUTH & MULTI-USER SYSTEM (1 MOBILE = 1 ID) --- */
+    function getUsersDatabase() {
+      return JSON.parse(localStorage.getItem('fv_users_db') || '{}');
+    }
+    function saveUsersDatabase(db) {
+      localStorage.setItem('fv_users_db', JSON.stringify(db));
+    }
+    function getCurrentLoggedInUser() {
+      var phone = localStorage.getItem('cust_saved_phone');
+      if (!phone) return null;
+      var db = getUsersDatabase();
+      return db[phone] || null;
+    }
 
-      document.getElementById('dispProfileName').innerText = name;
-      document.getElementById('dispProfilePhone').innerText = phone;
+    function handleProfileStripClick() {
+      var user = getCurrentLoggedInUser();
+      if (user) {
+        openProfilePopup();
+      } else {
+        toggleAuthForms('login');
+        showPopup('authModal');
+      }
+    }
+
+    function toggleAuthForms(mode) {
+      var loginBox = document.getElementById('authLoginBox');
+      var regBox = document.getElementById('authRegisterBox');
+      if (mode === 'register') {
+        loginBox.style.display = 'none';
+        regBox.style.display = 'block';
+      } else {
+        loginBox.style.display = 'block';
+        regBox.style.display = 'none';
+      }
+    }
+
+    function handleUserRegister() {
+      var name = document.getElementById('regNameInput').value.trim();
+      var phone = document.getElementById('regPhoneInput').value.trim();
+      var pass = document.getElementById('regPassInput').value.trim();
+
+      if (!name) { alert("Please enter your full name."); return; }
+      if (phone.length !== 10 || isNaN(phone)) { alert("Please enter a valid 10-digit mobile number."); return; }
+      if (pass.length < 4) { alert("Password must be at least 4 characters long."); return; }
+
+      var db = getUsersDatabase();
+      if (db[phone]) {
+        alert("This mobile number is already registered! Please login with your password.");
+        toggleAuthForms('login');
+        document.getElementById('loginPhoneInput').value = phone;
+        return;
+      }
+
+      // 1 Mobile = 1 Unique Account ID with separate wallet balance
+      db[phone] = {
+        name: name,
+        phone: phone,
+        pass: pass,
+        wallet: 20.00, // ₹20 Welcome bonus
+        area: "",
+        createdAt: new Date().toISOString()
+      };
+      saveUsersDatabase(db);
+
+      // Set logged in session
+      localStorage.setItem('cust_saved_phone', phone);
+      localStorage.setItem('cust_saved_name', name);
+
+      hidePopup('authModal');
+      updateProfileLabels();
+      alert("✓ Account created successfully! ₹20 Welcome bonus added to your wallet.");
+    }
+
+    function handleUserLogin() {
+      var phone = document.getElementById('loginPhoneInput').value.trim();
+      var pass = document.getElementById('loginPassInput').value.trim();
+
+      if (phone.length !== 10) { alert("Please enter your 10-digit mobile number."); return; }
+      if (!pass) { alert("Please enter your password."); return; }
+
+      var db = getUsersDatabase();
+      if (!db[phone]) {
+        alert("No account found with this mobile number. Please register first.");
+        toggleAuthForms('register');
+        document.getElementById('regPhoneInput').value = phone;
+        return;
+      }
+
+      if (db[phone].pass !== pass) {
+        alert("Incorrect password! Please try again.");
+        return;
+      }
+
+      // Successful Login
+      localStorage.setItem('cust_saved_phone', phone);
+      localStorage.setItem('cust_saved_name', db[phone].name);
+
+      hidePopup('authModal');
+      updateProfileLabels();
+      alert("✓ Welcome back, " + db[phone].name + "!");
+    }
+
+    /* --- WALLET & ADD MONEY FUNCTIONS --- */
+    function openWalletPopup() {
+      var user = getCurrentLoggedInUser();
+      if (!user) {
+        alert("Please login first to access and add money to your wallet.");
+        toggleAuthForms('login');
+        showPopup('authModal');
+        return;
+      }
+      document.getElementById('modalWalletBal').innerText = (Number(user.wallet) || 0).toFixed(2);
+      document.getElementById('addMoneyInput').value = "";
+      document.getElementById('walletQrSection').style.display = "none";
+      showPopup('walletModal');
+    }
+
+    function setAddAmount(amt) {
+      document.getElementById('addMoneyInput').value = amt;
+      genWalletQr();
+    }
+
+    function genWalletQr() {
+      var amt = parseFloat(document.getElementById('addMoneyInput').value);
+      var qrSec = document.getElementById('walletQrSection');
+      var qrImg = document.getElementById('walletQrImg');
+
+      if (amt && amt >= 10) {
+        qrSec.style.display = "block";
+        var upiUri = "upi://pay?pa=" + UPI_ID + "&pn=Fresh%20Veggie%20Wallet&am=" + amt + "&cu=INR";
+        qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=" + encodeURIComponent(upiUri);
+      } else {
+        qrSec.style.display = "none";
+      }
+    }
+
+    function confirmAddMoney() {
+      var amt = parseFloat(document.getElementById('addMoneyInput').value);
+      if (!amt || amt < 10) {
+        alert("Please enter a valid amount (minimum ₹10).");
+        return;
+      }
+
+      var phone = localStorage.getItem('cust_saved_phone');
+      var db = getUsersDatabase();
+      if (!phone || !db[phone]) {
+        alert("Please login first.");
+        return;
+      }
+
+      db[phone].wallet = (Number(db[phone].wallet) || 0) + amt;
+      saveUsersDatabase(db);
+
+      updateProfileLabels();
+      document.getElementById('modalWalletBal').innerText = db[phone].wallet.toFixed(2);
+      alert("✓ ₹" + amt.toFixed(2) + " successfully credited to your wallet balance!");
+      hidePopup('walletModal');
+    }
+
+    function updateProfileLabels() {
+      var phone = (localStorage.getItem('cust_saved_phone') || '').trim();
+      var user = getCurrentLoggedInUser();
+      var wishlist = JSON.parse(localStorage.getItem('cust_wishlist') || '[]');
+      var allOrders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+
+      var currentWallet = user ? (Number(user.wallet) || 0) : 0;
+      var walletText = currentWallet.toFixed(2);
+
+      // Update wallet in all UI locations
+      document.getElementById('headerWalletBal').innerText = walletText;
+      document.getElementById('shopWalletBal').innerText = walletText;
+      document.getElementById('accWalletBal').innerText = walletText;
+
+      // Filter orders strictly by logged in phone
+      var myOrders = [];
+      if (phone) {
+        myOrders = allOrders.filter(function(o) {
+          return String(o.phone || '').trim() === phone;
+        });
+      }
+
+      if (user) {
+        document.getElementById('dispProfileName').innerText = user.name;
+        document.getElementById('dispProfilePhone').innerText = "+91 " + user.phone;
+        document.getElementById('logoutBtnText').innerText = "Logout (" + user.name + ")";
+      } else {
+        document.getElementById('dispProfileName').innerText = "Login / Register";
+        document.getElementById('dispProfilePhone').innerText = "Tap to access your account";
+        document.getElementById('logoutBtnText').innerText = "Sign In";
+      }
+
       document.getElementById('wishCountLabel').innerText = wishlist.length + " items ›";
       document.getElementById('accCartCount').innerText = cartItems.reduce(function(s, i) { return s + i.qty; }, 0);
-      document.getElementById('myOrdersCountBadge').innerText = orders.length + " Orders ›";
+      document.getElementById('myOrdersCountBadge').innerText = myOrders.length + " Orders ›";
 
-      // Refer Stats
+      // Referral stats
       var refHist = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
       var totalEarnings = refHist.reduce(function(s, i) { return s + (Number(i.bonus) || 0); }, 0);
       document.getElementById('dispTotalReferred').innerText = refHist.length;
       document.getElementById('dispTotalRefEarnings').innerText = totalEarnings.toFixed(2);
     }
 
-    /* --- 1. MY ORDERS POPUP (RESTORED WITH LIVE TRACKING) --- */
+    /* --- 1. MY ORDERS POPUP (FILTERED STRICTLY BY PHONE) --- */
     function openMyOrdersPopup() {
-      var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var phone = (localStorage.getItem('cust_saved_phone') || '').trim();
       var container = document.getElementById('myOrdersListContainer');
 
-      if (!orders.length) {
-        container.innerHTML = "<p style='text-align:center; color:var(--muted); padding:30px 10px;'>No orders placed yet.<br>Go to shop and order fresh vegetables!</p>";
-      } else {
-        var html = "";
-        orders.slice().reverse().forEach(function(ord, revIdx) {
-          var originalIdx = orders.length - 1 - revIdx;
-          var st = ord.status || ord.orderStatus || "Placed";
-
-          // Step Index: Received(1) -> Accepted(2) -> Dispatch(3) -> Delivered(4)
-          var step = 1;
-          if (st === "Accepted") step = 2;
-          if (st === "Packed" || st === "Out for Delivery") step = 3;
-          if (st === "Delivered") step = 4;
-
-          var itemsList = "";
-          if (Array.isArray(ord.items)) {
-            itemsList = ord.items.map(function(i) {
-              if (typeof i === 'string') return i;
-              return (i.name || 'Item') + ' × ' + (i.qty || 1);
-            }).join(', ');
-          } else {
-            itemsList = "Daily Vegetable Pack";
-          }
-
-          html += '<div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">' +
-                    '<div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; border-bottom:1px dashed #e2e8f0; padding-bottom:6px; margin-bottom:6px;">' +
-                      '<span style="color:var(--primary);">' + ord.orderId + '</span>' +
-                      '<span style="font-size:11px; padding:3px 8px; border-radius:6px; background:#e8f5ed; color:var(--primary);">' + st + '</span>' +
-                    '</div>' +
-                    '<div style="font-size:12px; color:#334155; margin-bottom:4px;"><b>Items:</b> ' + itemsList + '</div>' +
-                    '<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;">' +
-                      '<span>Address: ' + (ord.village || 'Gossaigaon') + '</span>' +
-                      '<b>Total: ₹' + ord.total + ' (' + (ord.payment || 'COD') + ')</b>' +
-                    '</div>';
-
-          if (st !== "Cancelled") {
-            html += '<div class="track-step-wrap">' +
-                      '<div class="step-item ' + (step >= 1 ? 'active' : '') + '"><div class="step-dot">1</div><div class="step-title">Received</div></div>' +
-                      '<div class="step-item ' + (step >= 2 ? 'active' : '') + '"><div class="step-dot">2</div><div class="step-title">Accepted</div></div>' +
-                      '<div class="step-item ' + (step >= 3 ? 'active' : '') + '"><div class="step-dot">3</div><div class="step-title">Dispatch</div></div>' +
-                      '<div class="step-item ' + (step >= 4 ? 'active' : '') + '"><div class="step-dot">4</div><div class="step-title">Delivered</div></div>' +
-                    '</div>';
-          } else {
-            html += '<div style="color:var(--danger); font-size:11px; font-weight:700; margin-top:4px;">Order was cancelled.</div>';
-          }
-
-          html += '</div>';
-        });
-        container.innerHTML = html;
+      if (!phone) {
+        container.innerHTML = 
+          "<div style='text-align:center; padding:36px 12px; color:var(--muted);'>" +
+            "<div style='font-size:36px; margin-bottom:10px;'>🔒</div>" +
+            "<b style='font-size:15px; color:#1e293b;'>Please login to view your orders</b><br>" +
+            "<button onclick='hidePopup("myOrdersModal"); handleProfileStripClick();' class='btn-block btn-primary' style='max-width:200px; margin:14px auto 0;'>Login Now</button>" +
+          "</div>";
+        showPopup('myOrdersModal');
+        return;
       }
+
+      var allOrders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var myOrders = allOrders.filter(function(o) {
+        return String(o.phone || '').trim() === phone;
+      });
+
+      if (myOrders.length === 0) {
+        container.innerHTML = 
+          "<div style='text-align:center; padding:36px 12px; color:var(--muted);'>" +
+            "<div style='font-size:36px; margin-bottom:10px;'>🛍️</div>" +
+            "<b style='font-size:15px; color:#1e293b;'>Aapne abhi tak koi order nahi diya hai</b>" +
+            "<p style='font-size:12px; margin-top:6px;'>Shop se fresh sabzi order karein; aapka live order status yahan dikhega!</p>" +
+          "</div>";
+        showPopup('myOrdersModal');
+        return;
+      }
+
+      var html = "<div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;'>" +
+                   "<small style='color:var(--muted); font-size:12px;'>Orders for: <b>" + phone + "</b></small>" +
+                   "<button onclick='clearMyOrdersHistory()' style='background:#fee2e2; color:#b91c1c; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;'>Clear My History</button>" +
+                 "</div>";
+
+      myOrders.slice().reverse().forEach(function(ord) {
+        var st = ord.status || ord.orderStatus || "Placed";
+
+        var step = 1;
+        if (st === "Accepted") step = 2;
+        if (st === "Packed" || st === "Out for Delivery") step = 3;
+        if (st === "Delivered") step = 4;
+
+        var itemsList = "";
+        if (Array.isArray(ord.items)) {
+          itemsList = ord.items.map(function(i) {
+            if (typeof i === 'string') return i;
+            return (i.name || 'Item') + ' × ' + (i.qty || 1);
+          }).join(', ');
+        } else {
+          itemsList = "Daily Vegetable Pack";
+        }
+
+        html += '<div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05);">' +
+                  '<div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; border-bottom:1px dashed #e2e8f0; padding-bottom:6px; margin-bottom:6px;">' +
+                    '<span style="color:var(--primary);">' + ord.orderId + '</span>' +
+                    '<span style="font-size:11px; padding:3px 8px; border-radius:6px; background:#e8f5ed; color:var(--primary);">' + st + '</span>' +
+                  '</div>' +
+                  '<div style="font-size:12px; color:#334155; margin-bottom:4px;"><b>Items:</b> ' + itemsList + '</div>' +
+                  '<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;">' +
+                    '<span>Address: ' + (ord.village || 'Gossaigaon') + '</span>' +
+                    '<b>Total: ₹' + ord.total + ' (' + (ord.payment || 'COD') + ')</b>' +
+                  '</div>';
+
+        if (st !== "Cancelled") {
+          html += '<div class="track-step-wrap">' +
+                    '<div class="step-item ' + (step >= 1 ? 'active' : '') + '"><div class="step-dot">1</div><div class="step-title">Received</div></div>' +
+                    '<div class="step-item ' + (step >= 2 ? 'active' : '') + '"><div class="step-dot">2</div><div class="step-title">Accepted</div></div>' +
+                    '<div class="step-item ' + (step >= 3 ? 'active' : '') + '"><div class="step-dot">3</div><div class="step-title">Dispatch</div></div>' +
+                    '<div class="step-item ' + (step >= 4 ? 'active' : '') + '"><div class="step-dot">4</div><div class="step-title">Delivered</div></div>' +
+                  '</div>';
+        } else {
+          html += '<div style="color:var(--danger); font-size:11px; font-weight:700; margin-top:4px;">Order was cancelled.</div>';
+        }
+
+        html += '</div>';
+      });
+
+      container.innerHTML = html;
       showPopup('myOrdersModal');
+    }
+
+    function clearMyOrdersHistory() {
+      if (!confirm("Are you sure you want to clear your order history?")) return;
+      var allOrders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
+      var currentPhone = (localStorage.getItem('cust_saved_phone') || '').trim();
+      var remaining = allOrders.filter(function(o){ return String(o.phone || '').trim() !== currentPhone; });
+      localStorage.setItem('fv_orders', JSON.stringify(remaining));
+      openMyOrdersPopup();
+      updateProfileLabels();
     }
 
     /* --- 2. REFER & EARN POPUP --- */
@@ -1223,26 +1528,30 @@
 
     /* --- 3. PROFILE POPUP --- */
     function openProfilePopup() {
-      document.getElementById('profNameInput').value = localStorage.getItem('cust_saved_name') || '';
-      document.getElementById('profPhoneInput').value = localStorage.getItem('cust_saved_phone') || '';
-      document.getElementById('profAreaInput').value = localStorage.getItem('cust_saved_area') || '';
+      var user = getCurrentLoggedInUser();
+      if (!user) { handleProfileStripClick(); return; }
+      document.getElementById('profNameInput').value = user.name || '';
+      document.getElementById('profPhoneInput').value = user.phone || '';
+      document.getElementById('profAreaInput').value = user.area || '';
       showPopup('profileEditModal');
     }
     function saveProfileDetails() {
       var name = document.getElementById('profNameInput').value.trim();
-      var phone = document.getElementById('profPhoneInput').value.trim();
       var area = document.getElementById('profAreaInput').value.trim();
-
       if (!name) { alert("Please enter your name."); return; }
-      if (phone && phone.length !== 10) { alert("Please enter a valid 10-digit phone number."); return; }
 
-      localStorage.setItem('cust_saved_name', name);
-      if (phone) localStorage.setItem('cust_saved_phone', phone);
-      if (area) localStorage.setItem('cust_saved_area', area);
+      var phone = localStorage.getItem('cust_saved_phone');
+      var db = getUsersDatabase();
+      if (phone && db[phone]) {
+        db[phone].name = name;
+        db[phone].area = area;
+        saveUsersDatabase(db);
+        localStorage.setItem('cust_saved_name', name);
+      }
 
       updateProfileLabels();
       hidePopup('profileEditModal');
-      alert("✓ Profile details saved successfully!");
+      alert("✓ Profile details updated successfully!");
     }
 
     /* --- 4. HELP CENTRE --- */
@@ -1360,20 +1669,23 @@
 
     /* --- 13. LOGOUT --- */
     function openLogoutPopup() {
+      var user = getCurrentLoggedInUser();
+      if (!user) {
+        handleProfileStripClick();
+        return;
+      }
       showPopup('logoutModal');
     }
     function confirmLogout() {
       localStorage.removeItem('cust_saved_name');
       localStorage.removeItem('cust_saved_phone');
-      localStorage.removeItem('cust_saved_area');
-      localStorage.removeItem('cust_saved_addresses');
       hidePopup('logoutModal');
       updateProfileLabels();
-      alert("Logged out and session reset.");
+      alert("✓ Logged out successfully.");
       switchScreen('shop');
     }
 
-    /* 5-TAP ADMIN */
+    /* 5-TAP ADMIN TRIGGER (PIN: 8822 or 1234) */
     function secretAdminTap() {
       adminTapCount++;
       clearTimeout(adminTapTimer);
@@ -1433,6 +1745,13 @@
       if (cartItems.length === 0) { alert("Your cart is empty."); return; }
       renderCartUI();
       loadSavedAddressesDropdown();
+
+      var user = getCurrentLoggedInUser();
+      if (user) {
+        document.getElementById('cName').value = user.name;
+        document.getElementById('cPhone').value = user.phone;
+      }
+
       document.getElementById('checkoutFormWrapper').style.display = "block";
       document.getElementById('orderSuccessSection').style.display = "none";
       showPopup('cartPopup');
@@ -1480,12 +1799,6 @@
       dropdown.innerHTML = "";
 
       var savedList = JSON.parse(localStorage.getItem('cust_saved_addresses') || '[]');
-      var savedName = localStorage.getItem('cust_saved_name') || '';
-      var savedPhone = localStorage.getItem('cust_saved_phone') || '';
-
-      if (savedName) document.getElementById('cName').value = savedName;
-      if (savedPhone) document.getElementById('cPhone').value = savedPhone;
-
       if (savedList.length > 0) {
         savedList.forEach(function(addrObj, idx) {
           var opt = document.createElement('option');
@@ -1552,6 +1865,26 @@
         return;
       }
 
+      var user = getCurrentLoggedInUser();
+
+      // WALLET PAYMENT CHECK & DEDUCTION
+      if (payType === 'WALLET') {
+        if (!user) {
+          alert("Please login to pay via Wallet!");
+          handleProfileStripClick();
+          return;
+        }
+        var wBal = Number(user.wallet) || 0;
+        if (wBal < totals.total) {
+          alert("Insufficient wallet balance (₹" + wBal.toFixed(2) + "). Please add money or choose COD/UPI.");
+          openWalletPopup();
+          return;
+        }
+        var db = getUsersDatabase();
+        db[phone].wallet = wBal - totals.total;
+        saveUsersDatabase(db);
+      }
+
       var txnId = "N/A";
       if (payType === "UPI") {
         txnId = (document.getElementById('cTxnId').value || "").trim();
@@ -1564,8 +1897,7 @@
       localStorage.setItem('cust_saved_name', name);
       localStorage.setItem('cust_saved_phone', phone);
 
-      // Referral Reward Calculation logic:
-      // ₹5 on 1st order + ₹5 bonus per ₹1,000 cart total
+      // Referral Reward: ₹5 on 1st verified order + ₹5 bonus per ₹1,000 cart total
       if (refCodeUsed) {
         var refHist = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
         var orderBonus = 5 + (Math.floor(totals.total / 1000) * 5);
@@ -1592,7 +1924,7 @@
         items: cartItems.slice(),
         total: totals.total,
         payment: payType,
-        paymentStatus: payType === 'COD' ? 'Cash Pending' : 'Paid (Verify UTR)',
+        paymentStatus: payType === 'WALLET' ? 'Paid via Wallet' : (payType === 'COD' ? 'Cash Pending' : 'Paid (Verify UTR)'),
         transactionId: txnId,
         status: "Placed",
         date: new Date().toISOString()
