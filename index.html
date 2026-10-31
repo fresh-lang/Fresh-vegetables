@@ -1140,6 +1140,7 @@
 
     function renderStoreProducts() {
       var grid = document.getElementById('productsGrid');
+      if (!grid) return;
       var products = getStoreProducts();
       var q = (document.getElementById('searchInput').value || "").toLowerCase().trim();
       var html = "";
@@ -1182,13 +1183,19 @@
     function setCategoryFilter(cat, btn) {
       currentCatFilter = cat;
       document.querySelectorAll('.cat-pill').forEach(function(el) { el.classList.remove('active'); });
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       renderStoreProducts();
     }
 
     function doSearch() { renderStoreProducts(); }
-    function showPopup(id) { document.getElementById(id).style.display = "flex"; }
-    function hidePopup(id) { document.getElementById(id).style.display = "none"; }
+    function showPopup(id) { 
+      var el = document.getElementById(id);
+      if (el) el.style.display = "flex"; 
+    }
+    function hidePopup(id) { 
+      var el = document.getElementById(id);
+      if (el) el.style.display = "none"; 
+    }
 
     /* SCREEN SWITCHER (Shop vs Account) */
     function switchScreen(screen) {
@@ -1269,18 +1276,16 @@
         return;
       }
 
-      // 1 Mobile = 1 Unique Account ID with separate wallet balance
       db[phone] = {
         name: name,
         phone: phone,
         pass: pass,
-        wallet: 20.00, // ₹20 Welcome bonus
+        wallet: 20.00,
         area: "",
         createdAt: new Date().toISOString()
       };
       saveUsersDatabase(db);
 
-      // Set logged in session
       localStorage.setItem('cust_saved_phone', phone);
       localStorage.setItem('cust_saved_name', name);
 
@@ -1309,7 +1314,6 @@
         return;
       }
 
-      // Successful Login
       localStorage.setItem('cust_saved_phone', phone);
       localStorage.setItem('cust_saved_name', db[phone].name);
 
@@ -1384,12 +1388,10 @@
       var currentWallet = user ? (Number(user.wallet) || 0) : 0;
       var walletText = currentWallet.toFixed(2);
 
-      // Update wallet in all UI locations
       document.getElementById('headerWalletBal').innerText = walletText;
       document.getElementById('shopWalletBal').innerText = walletText;
       document.getElementById('accWalletBal').innerText = walletText;
 
-      // Filter orders strictly by logged in phone
       var myOrders = [];
       if (phone) {
         myOrders = allOrders.filter(function(o) {
@@ -1411,7 +1413,6 @@
       document.getElementById('accCartCount').innerText = cartItems.reduce(function(s, i) { return s + i.qty; }, 0);
       document.getElementById('myOrdersCountBadge').innerText = myOrders.length + " Orders ›";
 
-      // Referral stats
       var refHist = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
       var totalEarnings = refHist.reduce(function(s, i) { return s + (Number(i.bonus) || 0); }, 0);
       document.getElementById('dispTotalReferred').innerText = refHist.length;
@@ -1428,7 +1429,7 @@
           "<div style='text-align:center; padding:36px 12px; color:var(--muted);'>" +
             "<div style='font-size:36px; margin-bottom:10px;'>🔒</div>" +
             "<b style='font-size:15px; color:#1e293b;'>Please login to view your orders</b><br>" +
-            "<button onclick='hidePopup("myOrdersModal"); handleProfileStripClick();' class='btn-block btn-primary' style='max-width:200px; margin:14px auto 0;'>Login Now</button>" +
+            "<button onclick='goToLoginFromOrders()' class='btn-block btn-primary' style='max-width:200px; margin:14px auto 0;'>Login Now</button>" +
           "</div>";
         showPopup('myOrdersModal');
         return;
@@ -1500,6 +1501,11 @@
 
       container.innerHTML = html;
       showPopup('myOrdersModal');
+    }
+
+    function goToLoginFromOrders() {
+      hidePopup('myOrdersModal');
+      handleProfileStripClick();
     }
 
     function clearMyOrdersHistory() {
@@ -1897,7 +1903,6 @@
       localStorage.setItem('cust_saved_name', name);
       localStorage.setItem('cust_saved_phone', phone);
 
-      // Referral Reward: ₹5 on 1st verified order + ₹5 bonus per ₹1,000 cart total
       if (refCodeUsed) {
         var refHist = JSON.parse(localStorage.getItem('fv_referral_history') || '[]');
         var orderBonus = 5 + (Math.floor(totals.total / 1000) * 5);
@@ -1952,7 +1957,14 @@
       updateProfileLabels();
     }
 
-    // Startup
+    // Startup Execution
+    window.addEventListener('DOMContentLoaded', function() {
+      renderStoreProducts();
+      loadSavedAddressesDropdown();
+      updateProfileLabels();
+    });
+
+    // Immediate fallback execution
     renderStoreProducts();
     loadSavedAddressesDropdown();
     updateProfileLabels();
