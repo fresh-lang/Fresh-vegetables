@@ -2,65 +2,227 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fresh Veggie Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Fresh Veggie | Store Admin Dashboard</title>
   <style>
     :root {
       --green: #16823b;
       --green-dark: #0f5c2a;
       --bg: #f0f4f1;
       --line: #d8e6dc;
-      --danger: #d9534f;
+      --danger: #dc2626;
+      --muted: #60766b;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-    body { background: var(--bg); padding-bottom: 50px; }
-    header { background: var(--green-dark); color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important; 
+    }
+    body { background: var(--bg); padding-bottom: 50px; color: #17241c; }
+    header {
+      background: var(--green-dark);
+      color: white;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
     .container { max-width: 720px; margin: 0 auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .stat-card { background: white; border-radius: 10px; padding: 12px; border: 1px solid var(--line); text-align: center; }
     .stat-num { font-size: 20px; font-weight: 800; color: var(--green-dark); margin-top: 4px; }
-    .order-card { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+    .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    
+    .nav-tabs { display: flex; gap: 8px; background: #e2ece5; padding: 4px; border-radius: 10px; }
+    .nav-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--muted);
+      border: none;
+      background: transparent;
+    }
+    .nav-tab.active { background: white; color: var(--green-dark); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .order-card, .prod-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
     .order-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--line); padding-bottom: 8px; margin-bottom: 8px; }
-    .order-id { font-weight: 800; color: var(--green-dark); }
-    .badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+    .order-id { font-weight: 800; color: var(--green-dark); font-size: 14px; }
+    .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
     .badge-placed { background: #fff3cd; color: #856404; }
     .badge-delivered { background: #d4edda; color: #155724; }
-    .btn-action { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
+    .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    .order-items { font-size: 13px; line-height: 1.5; margin-bottom: 8px; background: #f9fbf9; padding: 8px; border-radius: 6px; }
+
+    input, select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 8px;
+      outline: none;
+      background: #fff;
+    }
+    .btn-action { padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
     .btn-update { background: var(--green); color: white; }
-    .btn-del { background: #fbeae8; color: var(--danger); border: 1px solid #f5c6cb; }
+    .btn-del { background: #fee2e2; color: var(--danger); border: 1px solid #fca5a5; }
+
     #adminAuthScreen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
     .auth-box { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 24px; max-width: 320px; width: 100%; text-align: center; }
-    .auth-box input { width: 100%; padding: 10px; font-size: 18px; text-align: center; border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; letter-spacing: 4px; }
+    .auth-box input { font-size: 20px; text-align: center; letter-spacing: 6px; margin: 12px 0; }
   </style>
 </head>
 <body>
+
+  <!-- PIN LOCK (PIN: 8822 ya 1234) -->
   <div id="adminAuthScreen">
     <div class="auth-box">
       <div style="font-size: 36px; margin-bottom: 8px;">🔐</div>
-      <h3 style="color: var(--green-dark);">Admin Access</h3>
-      <p style="font-size: 12px; color: #60766b; margin-top: 4px;">Enter PIN (Default: 8822 or 1234)</p>
+      <h3 style="color: var(--green-dark);">Store Admin Access</h3>
+      <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Enter PIN to unlock control panel</p>
       <input type="password" id="adminPin" placeholder="••••" maxlength="6">
-      <button class="btn-action btn-update" style="width: 100%; padding: 10px;" onclick="verifyPin()">Unlock Dashboard</button>
+      <button class="btn-action btn-update" style="width: 100%; padding: 11px;" onclick="verifyPin()">Unlock Dashboard</button>
+      <p style="font-size: 11px; color: var(--muted); margin-top: 10px;">PIN: 8822 or 1234</p>
     </div>
   </div>
 
   <header>
     <div style="font-weight: 800; font-size: 17px;">🥦 Fresh Veggie Admin</div>
     <div>
-      <a href="index.html" style="color: white; text-decoration: none; font-size: 13px; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 6px;">Go to Shop</a>
+      <a href="index.html" class="header-btn">Go to Shop</a>
+      <button class="header-btn" onclick="logoutAdmin()">Lock</button>
     </div>
   </header>
 
   <div class="container" id="adminDashboard" style="display:none;">
+    
+    <!-- STATS -->
     <div class="stats-grid">
-      <div class="stat-card"><div>Orders</div><div class="stat-num" id="statOrders">0</div></div>
-      <div class="stat-card"><div>Total Sales</div><div class="stat-num">₹<span id="statSales">0</span></div></div>
-      <div class="stat-card"><div>Pending</div><div class="stat-num" id="statPending">0</div></div>
+      <div class="stat-card">
+        <div class="stat-lbl">Orders</div>
+        <div class="stat-num" id="statOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Total Sales</div>
+        <div class="stat-num">₹<span id="statSales">0</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Pending</div>
+        <div class="stat-num" id="statPending">0</div>
+      </div>
     </div>
-    <div id="adminOrdersList"></div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="nav-tabs">
+      <button class="nav-tab active" id="tabOrdersBtn" onclick="switchTab('orders')">📦 Customer Orders</button>
+      <button class="nav-tab" id="tabProductsBtn" onclick="switchTab('products')">📝 Edit Products / Price</button>
+      <button class="nav-tab" id="tabAddBtn" onclick="switchTab('add')">➕ Add Product</button>
+    </div>
+
+    <!-- TAB 1: ORDERS FEED -->
+    <div id="viewOrders">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 13px; font-weight: 700; color: var(--muted);">Incoming Orders</span>
+        <button onclick="renderOrders()" class="header-btn" style="background:var(--green); border:none;">🔄 Refresh</button>
+      </div>
+      <div id="adminOrdersList"></div>
+    </div>
+
+    <!-- TAB 2: PRODUCTS PRICE & STOCK EDIT -->
+    <div id="viewProducts" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 13px; font-weight: 700; color: var(--muted);">Click 'Edit' to change Price or Stock</span>
+        <button onclick="restoreDefaultProducts()" class="header-btn" style="background:#e0e0e0; color:#333; border:none;">Reset Defaults</button>
+      </div>
+      <div id="adminProductsList"></div>
+    </div>
+
+    <!-- TAB 3: ADD NEW PRODUCT -->
+    <div id="viewAdd" style="display: none;">
+      <div class="prod-card">
+        <h3 style="color: var(--green-dark); margin-bottom: 12px; font-size: 15px;">Add New Inventory Item</h3>
+        <label style="font-size: 12px; font-weight: 700;">Item Name:</label>
+        <input type="text" id="newPName" placeholder="e.g. Fresh Carrot (Gajar)">
+        
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1;">
+            <label style="font-size: 12px; font-weight: 700;">Price (₹):</label>
+            <input type="number" id="newPPrice" placeholder="40">
+          </div>
+          <div style="flex:1;">
+            <label style="font-size: 12px; font-weight: 700;">Unit:</label>
+            <select id="newPUnit">
+              <option value="kg">per kg</option>
+              <option value="pc">per piece</option>
+              <option value="litre">per litre</option>
+              <option value="pack">per pack</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1;">
+            <label style="font-size: 12px; font-weight: 700;">Stock Available:</label>
+            <input type="number" id="newPStock" value="50">
+          </div>
+          <div style="flex:1;">
+            <label style="font-size: 12px; font-weight: 700;">Category:</label>
+            <select id="newPCat">
+              <option value="Vegetables">Fresh Vegetables</option>
+              <option value="Groceries">Daily Groceries</option>
+            </select>
+          </div>
+        </div>
+
+        <label style="font-size: 12px; font-weight: 700;">Image Web URL (Optional):</label>
+        <input type="text" id="newPPhoto" placeholder="https://images.unsplash.com/...">
+
+        <button class="btn-action btn-update" style="width:100%; padding:12px; font-size:14px; margin-top:6px;" onclick="addNewProduct()">Save & Publish Product</button>
+      </div>
+    </div>
+
   </div>
 
   <script>
+    var defaultProducts = [
+      { id: 1, name: "Potato (Alu)", cat: "Vegetables", price: 27, unit: "kg", stock: 100, photo: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=400&q=80" },
+      { id: 2, name: "Tomato (Bilahi)", cat: "Vegetables", price: 35, unit: "kg", stock: 80, photo: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=400&q=80" },
+      { id: 3, name: "Onion (Piyaj)", cat: "Vegetables", price: 53, unit: "kg", stock: 60, photo: "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=400&q=80" },
+      { id: 4, name: "Cucumber (Tiyoh)", cat: "Vegetables", price: 28, unit: "kg", stock: 45, photo: "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?auto=format&fit=crop&w=400&q=80" },
+      { id: 5, name: "Cauliflower (Kobi)", cat: "Vegetables", price: 35, unit: "pc", stock: 30, photo: "https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?auto=format&fit=crop&w=400&q=80" },
+      { id: 6, name: "Cabbage (Bandhakobi)", cat: "Vegetables", price: 30, unit: "pc", stock: 40, photo: "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?auto=format&fit=crop&w=400&q=80" },
+      { id: 7, name: "Miniket Super Rice", cat: "Groceries", price: 52, unit: "kg", stock: 150, photo: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80" },
+      { id: 8, name: "Pure Mustard Oil", cat: "Groceries", price: 145, unit: "litre", stock: 50, photo: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80" },
+      { id: 9, name: "Masoor Dal", cat: "Groceries", price: 95, unit: "kg", stock: 75, photo: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=400&q=80" },
+      { id: 10, name: "Refined Pure Sugar", cat: "Groceries", price: 44, unit: "kg", stock: 90, photo: "https://images.unsplash.com/photo-1622484212850-cab596d629f2?auto=format&fit=crop&w=400&q=80" }
+    ];
+
     function verifyPin() {
       var pin = document.getElementById('adminPin').value.trim();
       if (pin === "8822" || pin === "1234") {
@@ -68,17 +230,37 @@
         document.getElementById('adminDashboard').style.display = "flex";
         renderOrders();
       } else {
-        alert("Incorrect PIN");
+        alert("Incorrect PIN. Please enter 8822 or 1234");
       }
     }
 
+    function logoutAdmin() {
+      document.getElementById('adminPin').value = "";
+      document.getElementById('adminAuthScreen').style.display = "flex";
+      document.getElementById('adminDashboard').style.display = "none";
+    }
+
+    function switchTab(tab) {
+      document.getElementById('viewOrders').style.display = (tab === 'orders') ? 'block' : 'none';
+      document.getElementById('viewProducts').style.display = (tab === 'products') ? 'block' : 'none';
+      document.getElementById('viewAdd').style.display = (tab === 'add') ? 'block' : 'none';
+
+      document.getElementById('tabOrdersBtn').classList.toggle('active', tab === 'orders');
+      document.getElementById('tabProductsBtn').classList.toggle('active', tab === 'products');
+      document.getElementById('tabAddBtn').classList.toggle('active', tab === 'add');
+
+      if (tab === 'orders') renderOrders();
+      if (tab === 'products') renderProducts();
+    }
+
+    /* --- ORDERS RENDER & MANAGEMENT --- */
     function renderOrders() {
       var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
       var container = document.getElementById('adminOrdersList');
       var totalSales = 0, pending = 0;
 
       if (!orders.length) {
-        container.innerHTML = "<p style='text-align: center; color: #60766b; padding: 20px;'>No orders received yet.</p>";
+        container.innerHTML = "<p style='text-align: center; color: var(--muted); padding: 24px;'>No orders received yet.</p>";
         document.getElementById('statOrders').innerText = "0";
         document.getElementById('statSales').innerText = "0";
         document.getElementById('statPending').innerText = "0";
@@ -88,31 +270,51 @@
       var html = "";
       orders.slice().reverse().forEach(function(ord, revIdx) {
         var originalIdx = orders.length - 1 - revIdx;
-        totalSales += Number(ord.total) || 0;
-        var st = ord.status || "Placed";
-        if (st !== "Delivered") pending++;
+        var st = ord.status || ord.orderStatus || "Placed";
+        totalSales += Number(ord.total || ord.totalAmount) || 0;
+        if (st !== "Delivered" && st !== "Cancelled") pending++;
+
+        var badgeClass = "badge-placed";
+        if (st === "Delivered") badgeClass = "badge-delivered";
+        if (st === "Cancelled") badgeClass = "badge-cancelled";
+
+        var itemsSummary = "";
+        if (Array.isArray(ord.items)) {
+          itemsSummary = ord.items.map(function(i) {
+            if (typeof i === 'string') return i;
+            return (i.name || 'Item') + ' × ' + (i.qty || 1) + ' (₹' + ((i.price || 0) * (i.qty || 1)) + ')';
+          }).join('<br>');
+        } else {
+          itemsSummary = "Vegetables Pack";
+        }
+
+        var fullAddr = ord.deliveryAddress || (ord.village ? (ord.village + ', ' + ord.address) : (ord.address || 'Gossaigaon'));
+        var payType = ord.payment || ord.paymentMethod || 'COD';
+        var txnInfo = (ord.transactionId && ord.transactionId !== "N/A") ? '<div style="font-size:12px; margin-top:2px;"><b>UTR ID:</b> <code>' + ord.transactionId + '</code></div>' : '';
 
         html += '<div class="order-card">' +
                   '<div class="order-head">' +
-                    '<div><span class="order-id">' + ord.orderId + '</span></div>' +
-                    '<span class="badge badge-placed">' + st + '</span>' +
+                    '<div><span class="order-id">' + (ord.orderId || ('#ORD-' + (originalIdx + 1))) + '</span></div>' +
+                    '<span class="badge ' + badgeClass + '">' + st + '</span>' +
                   '</div>' +
                   '<div style="font-size:13px; margin-bottom: 6px;">' +
-                    '<b>' + ord.customer + '</b> (' + ord.phone + ')<br>' +
-                    '<span style="color:#60766b;">' + (ord.deliveryAddress || (ord.village + ', ' + ord.address)) + '</span>' +
+                    '<b>' + (ord.customer || ord.customerName || 'Customer') + '</b> (' + (ord.phone || ord.customerPhone || 'N/A') + ')<br>' +
+                    '<span style="color:var(--muted);">' + fullAddr + '</span>' +
                   '</div>' +
-                  '<div style="background:#f9fbf9; padding:8px; border-radius:6px; font-size:12px; margin-bottom:8px;">' +
-                    ord.items.map(function(i){ return i.name + ' × ' + i.qty + ' (₹' + (i.price*i.qty) + ')'; }).join('<br>') +
+                  '<div class="order-items">' + itemsSummary + '</div>' +
+                  '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">' +
+                    '<span>Payment: <b>' + payType + '</b></span>' +
+                    '<span style="font-weight:800; color:var(--green-dark);">Total: ₹' + (ord.total || ord.totalAmount || 0) + '</span>' +
                   '</div>' +
-                  '<div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;">' +
-                    '<span>Payment: <b>' + ord.payment + '</b></span>' +
-                    '<span style="font-weight:800; color:var(--green-dark);">Total: ₹' + ord.total + '</span>' +
-                  '</div>' +
-                  '<div style="display:flex; gap:6px;">' +
-                    '<select id="st_' + originalIdx + '" style="flex:1; padding:6px; border:1px solid var(--line); border-radius:6px;">' +
+                  txnInfo +
+                  '<div style="display:flex; gap:6px; margin-top:8px;">' +
+                    '<select id="st_' + originalIdx + '" style="flex:1; margin-bottom:0;">' +
                       '<option value="Placed" ' + (st==='Placed'?'selected':'') + '>Placed</option>' +
+                      '<option value="Accepted" ' + (st==='Accepted'?'selected':'') + '>Accepted</option>' +
+                      '<option value="Packed" ' + (st==='Packed'?'selected':'') + '>Packed</option>' +
                       '<option value="Out for Delivery" ' + (st==='Out for Delivery'?'selected':'') + '>Out for Delivery</option>' +
                       '<option value="Delivered" ' + (st==='Delivered'?'selected':'') + '>Delivered</option>' +
+                      '<option value="Cancelled" ' + (st==='Cancelled'?'selected':'') + '>Cancelled</option>' +
                     '</select>' +
                     '<button class="btn-action btn-update" onclick="saveStatus(' + originalIdx + ')">Save</button>' +
                     '<button class="btn-action btn-del" onclick="delOrder(' + originalIdx + ')">✕</button>' +
@@ -131,17 +333,114 @@
       var sel = document.getElementById('st_' + idx);
       if (!sel) return;
       orders[idx].status = sel.value;
+      orders[idx].orderStatus = sel.value;
       localStorage.setItem('fv_orders', JSON.stringify(orders));
       alert("Order status updated!");
       renderOrders();
     }
 
     function delOrder(idx) {
-      if (!confirm("Delete order record?")) return;
+      if (!confirm("Are you sure you want to remove this order?")) return;
       var orders = JSON.parse(localStorage.getItem('fv_orders') || '[]');
       orders.splice(idx, 1);
       localStorage.setItem('fv_orders', JSON.stringify(orders));
       renderOrders();
+    }
+
+    /* --- PRODUCTS PRICE & STOCK EDIT --- */
+    function getProducts() {
+      var saved = localStorage.getItem('fv_store_products');
+      if (!saved) {
+        localStorage.setItem('fv_store_products', JSON.stringify(defaultProducts));
+        return defaultProducts;
+      }
+      return JSON.parse(saved);
+    }
+
+    function renderProducts() {
+      var products = getProducts();
+      var container = document.getElementById('adminProductsList');
+      var html = "";
+
+      products.forEach(function(p) {
+        html += '<div class="prod-card" style="display:flex; justify-content:space-between; align-items:center;">' +
+                  '<div>' +
+                    '<b style="font-size:14px; color:var(--green-dark);">' + p.name + '</b><br>' +
+                    '<span style="font-size:12px; color:var(--muted);">' + p.cat + ' • <b>₹' + p.price + '</b>/' + p.unit + ' • Stock: ' + (p.stock || 0) + ' ' + p.unit + '</span>' +
+                  '</div>' +
+                  '<div style="display:flex; gap:6px;">' +
+                    '<button class="btn-action btn-update" onclick="editProductPrice(' + p.id + ')">Edit Price / Stock</button>' +
+                    '<button class="btn-action btn-del" onclick="deleteProduct(' + p.id + ')">✕</button>' +
+                  '</div>' +
+                '</div>';
+      });
+
+      container.innerHTML = html || "<p style='padding:20px; text-align:center;'>No products found.</p>";
+    }
+
+    function editProductPrice(id) {
+      var products = getProducts();
+      var p = products.find(function(it) { return it.id === id; });
+      if (!p) return;
+
+      var newPrice = prompt("Enter new price (₹) for " + p.name + ":", p.price);
+      if (newPrice === null) return;
+      newPrice = Number(newPrice);
+      if (isNaN(newPrice) || newPrice <= 0) { alert("Please enter a valid price!"); return; }
+
+      var newStock = prompt("Enter available stock quantity (" + p.unit + "):", p.stock || 50);
+      if (newStock !== null && !isNaN(Number(newStock))) {
+        p.stock = parseInt(newStock);
+      }
+
+      p.price = newPrice;
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      alert("✓ " + p.name + " updated successfully to ₹" + newPrice + "/" + p.unit);
+      renderProducts();
+    }
+
+    function deleteProduct(id) {
+      if (!confirm("Delete this product?")) return;
+      var products = getProducts().filter(function(p) { return p.id !== id; });
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      renderProducts();
+    }
+
+    function restoreDefaultProducts() {
+      if (!confirm("Reset all products and prices to default?")) return;
+      localStorage.setItem('fv_store_products', JSON.stringify(defaultProducts));
+      renderProducts();
+    }
+
+    function addNewProduct() {
+      var name = document.getElementById('newPName').value.trim();
+      var price = Number(document.getElementById('newPPrice').value);
+      var unit = document.getElementById('newPUnit').value;
+      var stock = parseInt(document.getElementById('newPStock').value) || 50;
+      var cat = document.getElementById('newPCat').value;
+      var photo = document.getElementById('newPPhoto').value.trim() || "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80";
+
+      if (!name || isNaN(price) || price <= 0) {
+        alert("Please enter a valid product name and price.");
+        return;
+      }
+
+      var products = getProducts();
+      products.push({
+        id: Date.now(),
+        name: name,
+        price: price,
+        unit: unit,
+        stock: stock,
+        cat: cat,
+        photo: photo
+      });
+
+      localStorage.setItem('fv_store_products', JSON.stringify(products));
+      alert("✓ New product added!");
+      document.getElementById('newPName').value = "";
+      document.getElementById('newPPrice').value = "";
+      switchTab('products');
     }
   </script>
 </body>
