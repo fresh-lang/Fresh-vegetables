@@ -1102,7 +1102,7 @@
       <button class="popup-close" onclick="hidePopup('adminSecretPopup')">✕</button>
       <div style="font-size: 32px; margin-bottom: 6px;">🔐</div>
       <h3 style="color: var(--primary-dark); font-size: 18px;">Admin Store Access</h3>
-      <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Enter PIN: 8822 to unlock Admin Dashboard</p>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Enter Security PIN to unlock</p>
       <input type="password" id="secretAdminPin" placeholder="••••" maxlength="4" style="text-align: center; letter-spacing: 8px; font-size: 20px;">
       <button class="btn-block btn-primary" onclick="verifyPinAdmin()">Unlock Admin</button>
     </div>
@@ -1710,7 +1710,7 @@
         hidePopup('adminSecretPopup');
         window.location.href = "admin.html";
       } else {
-        alert("Incorrect PIN. Enter PIN: 8822");
+        alert("Access Denied! Incorrect PIN.");
       }
     }
 
